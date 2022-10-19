@@ -1,41 +1,29 @@
 package com.epam.spring.testingapp.dto;
 
+import com.epam.spring.testingapp.model.enumerate.TestDifficult;
 import lombok.Builder;
 import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.util.List;
+
 @Data
 @Builder
 public class TestDto {
     private int id;
     private int subjectId;
+    @NotBlank(message = "Test name can`t be empty")
+    @Pattern(message = "Invalid test name format", regexp = "^[А-їA-z`']{2,}$")
     private String name;
+    @NotNull
+    @Range(min = 10, max = 180, message = "Test duration have to be between 10 and 180 minutes")
     private int duration;
-    private Difficult difficult;
-
-    public enum Difficult {
-        VERY_EASY,
-        EASY,
-        MEDIUM,
-        HARD,
-        IMPOSSIBLE;
-
-        private static final Logger log = LogManager.getLogger(Difficult.class);
-
-        public static Difficult difficultOf(int difficult) {
-            for (Difficult diff : values()) {
-                if (diff.ordinal() == difficult) {
-                    return diff;
-                }
-            }
-            log.debug("Difficult with id= {} wasn't found. Instead used default - {}", difficult, VERY_EASY);
-            return VERY_EASY;
-        }
-
-        @Override
-        public String toString() {
-            return this.name();
-        }
-    }
-
+    @NotNull(message = "Test difficult must be specified")
+    private TestDifficult difficult;
+    private List<QuestionDto> questions;
 }

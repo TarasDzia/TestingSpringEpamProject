@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 public class TestResultDto {
     private int id;
     private int accountId;
-    private int testId;
+    private TestDto test;
     private int score;
     private Timestamp completionDate;
 }

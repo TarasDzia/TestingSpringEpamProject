@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Answer {
     private int id;
-    private int questionId;
+    private Question question;
     private String description;
     private boolean correct;
 }

@@ -1,11 +1,10 @@
 package com.epam.spring.testingapp.model;
 
+import com.epam.spring.testingapp.model.enumerate.AccountRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.sql.Date;
 
@@ -17,40 +16,12 @@ public class Account {
     private int id;
     private String email;
     private String password;
-    private Role firstname;
+    private AccountRole accountRole;
+    private String firstname;
     private String surname;
     private Date birthdate;
     private boolean active;
     private boolean banned;
 
-    public enum Role {
-        USER(0), ADMIN(1);
 
-        int index;
-
-        Role(int index) {
-            this.index = index;
-        }
-
-        private static final Logger log = LogManager.getLogger(Role.class);
-
-        public static Role roleOf(int index) {
-            for (Role role : values()) {
-                if (role.index == index) {
-                    return role;
-                }
-            }
-            log.debug("Role with index= {} wasn't found. Instead used default - {}", index, USER);
-            return USER;
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        @Override
-        public String toString() {
-            return this.name();
-        }
-    }
 }

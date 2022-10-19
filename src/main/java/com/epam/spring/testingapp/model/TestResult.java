@@ -13,8 +13,8 @@ import java.sql.Timestamp;
 @Builder
 public class TestResult {
     private int id;
-    private int accountId;
-    private int testId;
+    private Account account;
+    private Test test;
     private int score;
     private Timestamp completionDate;
 }
