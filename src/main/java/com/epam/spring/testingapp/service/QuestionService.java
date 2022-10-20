@@ -9,7 +9,7 @@ public interface QuestionService {
 
     QuestionDto find(int questionId);
 
-    QuestionDto create(QuestionDto questionDto);
+    QuestionDto create(QuestionDto questionDto, int testId);
 
     QuestionDto update(QuestionDto questionDto, int questionId);
 

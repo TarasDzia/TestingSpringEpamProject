@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -24,10 +25,10 @@ public class TestResultController {
     }
 
     @PostMapping("test/{testId}/pass")
-//    todo inject jwt principal object to get current user that passing test
-    public TestResultDto passTest(@RequestBody List<UserAnswerDto> userAnswers, @PathVariable int testId, Principal principal) {
-//        AccountDto principal = (AccountDto) principal;
+//    todo inject spring security principal object to get current user that passing test
+    public TestResultDto passTest(@RequestBody Set<UserAnswerDto> userAnswers, @PathVariable int testId, Principal principal) {
+//        AccountDto currentAccount = (AccountDto) principal;
         log.info("passTest({},{},{})", userAnswers, testId, principal);
-        return testResultService.passTest(userAnswers, testId);
+        return testResultService.passTest(userAnswers, testId, 1);
     }
 }

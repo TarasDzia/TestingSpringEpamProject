@@ -17,6 +17,6 @@ public class Test {
     private Subject subject;
     private String name;
     private int duration;
-    private TestDifficult testDifficult;
+    private TestDifficult difficult;
     private List<Question> questions;
 }

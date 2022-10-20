@@ -20,27 +20,32 @@ public class AnswerController {
 
     @GetMapping("{questionId}/answer")
     public List<AnswerDto> findAll(@PathVariable int questionId) {
+        log.info("findAll({})", questionId);
         return answerService.findAll(questionId);
     }
 
     @GetMapping("/answer/{answerId}")
     public AnswerDto find(@PathVariable int answerId) {
+        log.info("find({})", answerId);
         return answerService.find(answerId);
     }
 
     @PostMapping("{questionId}/answer")
     @ResponseStatus(HttpStatus.CREATED)
     public AnswerDto create(@RequestBody AnswerDto answerDto, @PathVariable int questionId) {
+        log.info("create({}, {})", answerDto, questionId);
         return answerService.create(answerDto, questionId);
     }
 
     @PutMapping("/answer/{answerId}")
     public AnswerDto update(@RequestBody AnswerDto answerDto, @PathVariable int answerId) {
+        log.info("update({}, {})", answerDto, answerId);
         return answerService.update(answerDto, answerId);
     }
 
     @DeleteMapping("/answer/{answerId}")
     public void delete(@PathVariable int answerId) {
+        log.info("delete({})", answerId);
         answerService.delete(answerId);
     }
 }

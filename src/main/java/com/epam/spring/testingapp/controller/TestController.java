@@ -17,28 +17,33 @@ public class TestController {
     private final TestService testService;
 
     @GetMapping
-    public List<TestDto> findAll(@RequestParam(required = false) String search, @RequestParam(required = false) String sorting, @RequestParam(required = false) String subject) {
-        return testService.findAll(search, sorting, subject);
+    public List<TestDto> findAll(@RequestParam(required = false) String search, @RequestParam(required = false) String sorting, @RequestParam(required = false) int subjectId) {
+        log.info("findAll({}, {}, {})", search, sorting, subjectId);
+        return testService.findAll(search, sorting, subjectId);
     }
 
     @GetMapping("/{testId}")
     public TestDto find(@PathVariable int testId) {
+        log.info("find({})", testId);
         return testService.find(testId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TestDto create(@RequestBody TestDto testDto) {
+        log.info("create({})", testDto);
         return testService.create(testDto);
     }
 
     @PutMapping("/{testId}")
     public TestDto update(@RequestBody TestDto testDto, @PathVariable int testId) {
+        log.info("update({}, {})", testDto, testId);
         return testService.update(testDto, testId);
     }
 
     @DeleteMapping("/{testId}")
     public void delete(@PathVariable int testId) {
+        log.info("delete({})", testId);
         testService.delete(testId);
     }
 

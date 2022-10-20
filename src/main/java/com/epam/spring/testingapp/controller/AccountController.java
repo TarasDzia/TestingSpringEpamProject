@@ -19,22 +19,26 @@ public class AccountController {
 
     @GetMapping
     public List<AccountDto> findAll() {
+        log.info("findAll()");
         return accountService.findAll();
     }
 
     @GetMapping("/{accountId}")
     public AccountDto find(@PathVariable int accountId) {
+        log.info("find({})", accountId);
         return accountService.find(accountId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public AccountDto register(@RequestBody RegisterDTO account) {
+        log.info("register({})", account);
         return accountService.register(account);
     }
 
     @PutMapping("/{accountId}")
     public AccountDto update(@RequestBody AccountDto account, @PathVariable int accountId) {
+        log.info("update({}, {})", account, accountId);
         return accountService.update(account, accountId);
     }
 }

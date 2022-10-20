@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.sql.Date;
 
 @Data
@@ -16,10 +17,12 @@ public class AccountDto {
     @Email(message = "Invalid email address")
     @NotBlank
     private String email;
+    @NotNull
+    private AccountRole accountRole;
+    @Pattern(message = "Invalid firstname format", regexp = "^[А-їA-z`']{3,}$")
     private String firstname;
+    @Pattern(message = "Invalid surname format", regexp = "^[А-їA-z`']{3,}$")
     private String surname;
     private Date birthdate;
-    @NotNull
-    private AccountRole role;
     private boolean banned;
 }

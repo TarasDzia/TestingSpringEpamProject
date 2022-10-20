@@ -20,8 +20,5 @@ public class Account {
     private String firstname;
     private String surname;
     private Date birthdate;
-    private boolean active;
     private boolean banned;
-
-
 }

@@ -18,22 +18,26 @@ public class SubjectController {
 
     @GetMapping
     public List<SubjectDto> findAll() {
+        log.info("findAll()");
         return subjectService.findAll();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public SubjectDto create(@RequestBody SubjectDto subjectDto) {
+        log.info("create({})", subjectDto);
         return subjectService.create(subjectDto);
     }
 
     @PutMapping("/{subjectId}")
     public SubjectDto update(@RequestBody SubjectDto subjectDto, @PathVariable int subjectId) {
+        log.info("update({}, {})", subjectDto, subjectId);
         return subjectService.update(subjectDto, subjectId);
     }
 
     @DeleteMapping("/{subjectId}")
     public void delete(@PathVariable int subjectId) {
+        log.info("delete({})", subjectId);
         subjectService.delete(subjectId);
     }
 }

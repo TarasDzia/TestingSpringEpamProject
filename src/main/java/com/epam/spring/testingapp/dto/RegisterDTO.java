@@ -1,11 +1,18 @@
 package com.epam.spring.testingapp.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
 
+@Data
+@Builder
 public class RegisterDTO {
     @Email(message = "Invalid email address")
     @NotBlank(message = "Email cant be empty")
