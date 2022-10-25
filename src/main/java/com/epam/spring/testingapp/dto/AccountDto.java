@@ -1,8 +1,10 @@
 package com.epam.spring.testingapp.dto;
 
 import com.epam.spring.testingapp.model.enumerate.AccountRole;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -11,6 +13,8 @@ import javax.validation.constraints.Pattern;
 import java.sql.Date;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class AccountDto {
     private int id;

@@ -12,6 +12,8 @@ import javax.validation.constraints.Pattern;
 import java.sql.Date;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class RegisterDTO {
     @Email(message = "Invalid email address")

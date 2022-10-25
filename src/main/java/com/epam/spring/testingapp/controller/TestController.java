@@ -17,7 +17,7 @@ public class TestController {
     private final TestService testService;
 
     @GetMapping
-    public List<TestDto> findAll(@RequestParam(required = false) String search, @RequestParam(required = false) String sorting, @RequestParam(required = false) int subjectId) {
+    public List<TestDto> findAll(@RequestParam(required = false) String search, @RequestParam(required = false) String sorting, @RequestParam(required = false) Integer subjectId) {
         log.info("findAll({}, {}, {})", search, sorting, subjectId);
         return testService.findAll(search, sorting, subjectId);
     }
