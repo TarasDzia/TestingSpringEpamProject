@@ -1,48 +1,52 @@
 package com.epam.spring.testingapp.controller;
 
 import com.epam.spring.testingapp.dto.TestDto;
+import com.epam.spring.testingapp.dto.group.OnUpdate;
 import com.epam.spring.testingapp.service.TestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/test")
+@Validated
 public class TestController {
     private final TestService testService;
 
-    @GetMapping
-    public List<TestDto> findAll(@RequestParam(required = false) String search, @RequestParam(required = false) String sorting, @RequestParam(required = false) Integer subjectId) {
+    @GetMapping("/test")
+    public List<TestDto> findAll(@RequestParam(required = false) String search, @RequestParam(required = false) String sorting, @PathVariable(required = false) Integer subjectId) {
         log.info("findAll({}, {}, {})", search, sorting, subjectId);
         return testService.findAll(search, sorting, subjectId);
     }
 
-    @GetMapping("/{testId}")
-    public TestDto find(@PathVariable int testId) {
+    @GetMapping("/test/{testId}")
+    public TestDto find(@PathVariable @Min(1) int testId) {
         log.info("find({})", testId);
         return testService.find(testId);
     }
 
-    @PostMapping
+    @PostMapping("/subject/{subjectId}/test")
     @ResponseStatus(HttpStatus.CREATED)
-    public TestDto create(@RequestBody TestDto testDto) {
+    public TestDto create(@RequestBody @Valid TestDto testDto, @PathVariable @Min(1) int subjectId) {
         log.info("create({})", testDto);
-        return testService.create(testDto);
+        return testService.create(testDto, subjectId);
     }
 
-    @PutMapping("/{testId}")
-    public TestDto update(@RequestBody TestDto testDto, @PathVariable int testId) {
+    @PutMapping("/test/{testId}")
+    public TestDto update(@RequestBody @Validated(OnUpdate.class) TestDto testDto, @PathVariable @Min(1) int testId) {
         log.info("update({}, {})", testDto, testId);
         return testService.update(testDto, testId);
     }
 
-    @DeleteMapping("/{testId}")
-    public void delete(@PathVariable int testId) {
+    @DeleteMapping("/test/{testId}")
+    public void delete(@PathVariable @Min(1) int testId) {
         log.info("delete({})", testId);
         testService.delete(testId);
     }

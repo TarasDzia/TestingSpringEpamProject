@@ -31,7 +31,10 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public SubjectDto update(SubjectDto subjectDto, int subjectId) {
         Subject subject = SubjectMapper.INSTANCE.subjectDtoToSubject(subjectDto);
+
+//        saving
         subject.setId(subjectId);
+
         log.info("Updated subject#{} to = {}", subjectId, subject);
         return SubjectMapper.INSTANCE.subjectToSubjectDto(subject);
     }

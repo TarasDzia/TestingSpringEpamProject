@@ -2,6 +2,7 @@ package com.epam.spring.testingapp.service.impl;
 
 import com.epam.spring.testingapp.dto.TestDto;
 import com.epam.spring.testingapp.mapper.TestMapper;
+import com.epam.spring.testingapp.model.Subject;
 import com.epam.spring.testingapp.model.Test;
 import com.epam.spring.testingapp.service.TestService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,7 @@ import java.util.List;
 @Service
 public class TestServiceImpl implements TestService {
     @Override
-    public List<TestDto> findAll(String search, String sorting, int subject) {
+    public List<TestDto> findAll(String search, String sorting, Integer subjectId) {
         List<Test> tests = List.of(Test.builder().id(1).build(), Test.builder().id(2).build());
         log.info("Founded tests = {}", tests);
         return TestMapper.INSTANCE.testsToTestsDtos(tests);
@@ -35,9 +36,12 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public TestDto create(TestDto testDto) {
+    public TestDto create(TestDto testDto, int subjectId) {
         Test test = TestMapper.INSTANCE.testDtoToTest(testDto);
+//        saving
         test.setId(1);
+        test.setSubject(Subject.builder().id(subjectId).build());
+
         log.info("Created test = {}", test);
         return TestMapper.INSTANCE.testToTestDto(test);
     }

@@ -1,7 +1,6 @@
 package com.epam.spring.testingapp.service.impl;
 
 import com.epam.spring.testingapp.dto.AccountDto;
-import com.epam.spring.testingapp.dto.RegisterDTO;
 import com.epam.spring.testingapp.mapper.AccountMapper;
 import com.epam.spring.testingapp.model.Account;
 import com.epam.spring.testingapp.service.AccountService;
@@ -22,15 +21,18 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountDto find(int accountId) {
-        Account account = Account.builder().id(1).build();
+        Account account = Account.builder().id(accountId).build();
         log.info("Founded account =  {}", account);
         return AccountMapper.INSTANCE.accountToAccountDto(account);
     }
 
     @Override
-    public AccountDto register(RegisterDTO registerDTO) {
-        Account account = AccountMapper.INSTANCE.registerDtoToAccount(registerDTO);
+    public AccountDto register(AccountDto accountDto) {
+        Account account = AccountMapper.INSTANCE.accountDtoToAccount(accountDto);
+
+//        saving
         account.setId(1);
+
         log.info("Register account =  {}", account);
         return AccountMapper.INSTANCE.accountToAccountDto(account);
     }

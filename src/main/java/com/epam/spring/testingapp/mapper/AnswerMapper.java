@@ -17,7 +17,8 @@ public interface AnswerMapper {
     List<Answer> answersDtosToAnswers(List<AnswerDto> answerDtos);
     @Mapping(target = "questionId", source = "answer.question.id")
     AnswerDto answerToAnswerDto(Answer answer);
-    @Mapping(target = "question", source = "questionId")
+    @Mapping(target = "question", ignore = true)
+    @Mapping(target = "id", ignore = true)
     Answer answerDtoToAnswer(AnswerDto answerDto);
 
     default Question mapQuestion(int questionId) {

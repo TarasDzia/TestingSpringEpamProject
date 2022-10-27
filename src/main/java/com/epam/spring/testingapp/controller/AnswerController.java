@@ -3,48 +3,53 @@ package com.epam.spring.testingapp.controller;
 import com.epam.spring.testingapp.dto.AnswerDto;
 import com.epam.spring.testingapp.dto.QuestionDto;
 import com.epam.spring.testingapp.dto.TestDto;
+import com.epam.spring.testingapp.dto.group.OnUpdate;
 import com.epam.spring.testingapp.service.AnswerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/test/question")
+@Validated
 public class AnswerController {
     private final AnswerService answerService;
 
     @GetMapping("{questionId}/answer")
-    public List<AnswerDto> findAll(@PathVariable int questionId) {
+    public List<AnswerDto> findAll(@PathVariable @Min(1) int questionId) {
         log.info("findAll({})", questionId);
         return answerService.findAll(questionId);
     }
 
     @GetMapping("/answer/{answerId}")
-    public AnswerDto find(@PathVariable int answerId) {
+    public AnswerDto find(@PathVariable @Min(1) int answerId) {
         log.info("find({})", answerId);
         return answerService.find(answerId);
     }
 
     @PostMapping("{questionId}/answer")
     @ResponseStatus(HttpStatus.CREATED)
-    public AnswerDto create(@RequestBody AnswerDto answerDto, @PathVariable int questionId) {
+    public AnswerDto create(@RequestBody @Valid AnswerDto answerDto, @PathVariable @Min(1) int questionId) {
         log.info("create({}, {})", answerDto, questionId);
         return answerService.create(answerDto, questionId);
     }
 
     @PutMapping("/answer/{answerId}")
-    public AnswerDto update(@RequestBody AnswerDto answerDto, @PathVariable int answerId) {
+    public AnswerDto update(@RequestBody @Validated(OnUpdate.class) AnswerDto answerDto, @PathVariable @Min(1) int answerId) {
         log.info("update({}, {})", answerDto, answerId);
         return answerService.update(answerDto, answerId);
     }
 
     @DeleteMapping("/answer/{answerId}")
-    public void delete(@PathVariable int answerId) {
+    public void delete(@PathVariable @Min(1) int answerId) {
         log.info("delete({})", answerId);
         answerService.delete(answerId);
     }

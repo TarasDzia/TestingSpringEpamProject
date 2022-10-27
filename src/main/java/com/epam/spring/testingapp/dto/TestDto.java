@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
@@ -19,14 +20,20 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class TestDto {
-    private int id;
-    private int subjectId;
+    @Null(message = "Id of test must be absent")
+    private Integer id;
+
+    @Null(message = "Id of subject in witch this test occurs must be absent")
+    private Integer subjectId;
+
     @NotBlank(message = "Test name can`t be empty")
-    @Pattern(message = "Invalid test name format", regexp = "^[А-їA-z`']{2,}$")
+    @Pattern(message = "Invalid test name format", regexp = "^[`'\\s\\wА-ї]{2,}$")
     private String name;
+
     @NotNull
-    @Range(min = 10, max = 180, message = "Test duration have to be between 10 and 180 minutes")
-    private int duration;
+    @Range(min = 5, max = 180, message = "Test duration have to be between 5 and 180 minutes")
+    private Integer duration;
+
     @NotNull(message = "Test difficult must be specified")
     private TestDifficult difficult;
     private List<QuestionDto> questions;

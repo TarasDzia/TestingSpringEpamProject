@@ -20,7 +20,8 @@ public interface QuestionMapper {
     @Mapping(target = "testId", source = "question.test.id")
     QuestionDto questionToQuestionDto(Question question);
 
-    @Mapping(target = "test", source = "testId")
+    @Mapping(target = "test", ignore = true)
+    @Mapping(target = "id", ignore = true)
     Question questionDtoToQuestion(QuestionDto questionDto);
 
     default Test mapTest(int testId) {

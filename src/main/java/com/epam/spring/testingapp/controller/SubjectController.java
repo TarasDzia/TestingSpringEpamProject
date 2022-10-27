@@ -1,18 +1,23 @@
 package com.epam.spring.testingapp.controller;
 
 import com.epam.spring.testingapp.dto.SubjectDto;
+import com.epam.spring.testingapp.dto.group.OnUpdate;
 import com.epam.spring.testingapp.service.SubjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/subject")
+@Validated
 public class SubjectController {
     private final SubjectService subjectService;
 
@@ -24,19 +29,19 @@ public class SubjectController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public SubjectDto create(@RequestBody SubjectDto subjectDto) {
+    public SubjectDto create(@RequestBody @Valid SubjectDto subjectDto) {
         log.info("create({})", subjectDto);
         return subjectService.create(subjectDto);
     }
 
     @PutMapping("/{subjectId}")
-    public SubjectDto update(@RequestBody SubjectDto subjectDto, @PathVariable int subjectId) {
+    public SubjectDto update(@RequestBody @Validated(OnUpdate.class) SubjectDto subjectDto, @PathVariable @Min(1) int subjectId) {
         log.info("update({}, {})", subjectDto, subjectId);
         return subjectService.update(subjectDto, subjectId);
     }
 
     @DeleteMapping("/{subjectId}")
-    public void delete(@PathVariable int subjectId) {
+    public void delete(@PathVariable @Min(1) int subjectId) {
         log.info("delete({})", subjectId);
         subjectService.delete(subjectId);
     }

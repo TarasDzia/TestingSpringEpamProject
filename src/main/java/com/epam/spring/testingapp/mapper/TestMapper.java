@@ -21,8 +21,9 @@ public interface TestMapper {
     @Mapping(target = "subjectId", source = "test.subject.id")
     TestDto testToTestDto(Test test);
 
-    @Mapping(target = "subject", source = "subjectId")
-    @Mapping(target = "difficult", constant = "MEDIUM")
+    @Mapping(target = "subject", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "difficult", defaultValue = "MEDIUM")
     Test testDtoToTest(TestDto testDto);
 
     default Subject mapSubject(int subjectId) {
