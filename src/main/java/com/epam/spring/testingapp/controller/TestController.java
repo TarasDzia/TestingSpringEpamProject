@@ -2,6 +2,7 @@ package com.epam.spring.testingapp.controller;
 
 import com.epam.spring.testingapp.dto.TestDto;
 import com.epam.spring.testingapp.dto.group.OnUpdate;
+import com.epam.spring.testingapp.exception.NotFoundException;
 import com.epam.spring.testingapp.service.TestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -29,7 +31,12 @@ public class TestController {
     @GetMapping("/test/{testId}")
     public TestDto find(@PathVariable @Min(1) int testId) {
         log.info("find({})", testId);
-        return testService.find(testId);
+
+        TestDto testDto = testService.find(testId);
+        if(Objects.isNull(testDto)){
+            throw new NotFoundException("Test with id %s not found".formatted(testId));
+        }
+        return testDto;
     }
 
     @PostMapping("/subject/{subjectId}/test")
@@ -42,12 +49,20 @@ public class TestController {
     @PutMapping("/test/{testId}")
     public TestDto update(@RequestBody @Validated(OnUpdate.class) TestDto testDto, @PathVariable @Min(1) int testId) {
         log.info("update({}, {})", testDto, testId);
+
+        if(Objects.isNull(testService.find(testId))){
+            throw new NotFoundException("Test with id %s not found".formatted(testId));
+        }
         return testService.update(testDto, testId);
     }
 
     @DeleteMapping("/test/{testId}")
     public void delete(@PathVariable @Min(1) int testId) {
         log.info("delete({})", testId);
+
+        if(Objects.isNull(testService.find(testId))){
+            throw new NotFoundException("Test with id %s not found".formatted(testId));
+        }
         testService.delete(testId);
     }
 

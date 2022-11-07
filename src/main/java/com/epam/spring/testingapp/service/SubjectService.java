@@ -12,4 +12,7 @@ public interface SubjectService {
     void delete(int subjectId);
 
     SubjectDto update(SubjectDto subjectDto, int subjectId);
+
+    SubjectDto find(int subjectId);
+
 }

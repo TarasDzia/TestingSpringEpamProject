@@ -1,6 +1,7 @@
 package com.epam.spring.testingapp.service.impl;
 
 import com.epam.spring.testingapp.dto.AccountDto;
+import com.epam.spring.testingapp.exception.SuchEntityAlreadyExist;
 import com.epam.spring.testingapp.mapper.AccountMapper;
 import com.epam.spring.testingapp.model.Account;
 import com.epam.spring.testingapp.service.AccountService;
@@ -29,6 +30,12 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountDto register(AccountDto accountDto) {
         Account account = AccountMapper.INSTANCE.accountDtoToAccount(accountDto);
+
+//      checking by repository method findByEmail()
+        boolean accountAlreadyExist = false;
+        if(accountAlreadyExist){
+            throw new SuchEntityAlreadyExist("Account with this login already exist");
+        }
 
 //        saving
         account.setId(1);

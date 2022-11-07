@@ -6,18 +6,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TestResultDto {
-    private int id;
-    private int accountId;
-    private TestDto test;
-    private int score;
-
+public class ErrorDto {
+    private String message;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Timestamp completionDate;
+    private LocalDateTime time;
 }

@@ -40,6 +40,14 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    public SubjectDto find(int subjectId) {
+        Subject subject = Subject.builder().id(subjectId).name("Math").build();
+
+        log.info("Founded subject = {}", subject);
+        return SubjectMapper.INSTANCE.subjectToSubjectDto(subject);
+    }
+
+    @Override
     public void delete(int subjectId) {
         log.info("Deleted subject#{}", subjectId);
     }

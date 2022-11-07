@@ -3,6 +3,7 @@ package com.epam.spring.testingapp.controller;
 import com.epam.spring.testingapp.dto.AccountDto;
 import com.epam.spring.testingapp.dto.group.OnCreate;
 import com.epam.spring.testingapp.dto.group.OnUpdate;
+import com.epam.spring.testingapp.exception.NotFoundException;
 import com.epam.spring.testingapp.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -31,7 +33,12 @@ public class AccountController {
     @GetMapping("/{accountId}")
     public AccountDto find(@PathVariable @Min(1) int accountId) {
         log.info("find({})", accountId);
-        return accountService.find(accountId);
+
+        AccountDto accountDto = accountService.find(accountId);
+        if(Objects.isNull(accountDto)){
+            throw new NotFoundException("Account with id %s not found".formatted(accountId));
+        }
+        return accountDto;
     }
 
     @PostMapping
@@ -44,6 +51,10 @@ public class AccountController {
     @PutMapping("/{accountId}")
     public AccountDto update(@RequestBody @Validated(OnUpdate.class) AccountDto account, @PathVariable @Min(1) int accountId) {
         log.info("update({}, {})", account, accountId);
+
+        if(Objects.isNull(accountService.find(accountId))){
+            throw new NotFoundException("Account with id %s not found".formatted(accountId));
+        }
         return accountService.update(account, accountId);
     }
 }

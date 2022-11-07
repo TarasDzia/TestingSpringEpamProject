@@ -4,6 +4,7 @@ import com.epam.spring.testingapp.dto.group.OnCreate;
 import com.epam.spring.testingapp.dto.group.OnUpdate;
 import com.epam.spring.testingapp.model.enumerate.AccountRole;
 import com.fasterxml.jackson.annotation.JacksonInject;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,6 +42,7 @@ public class AccountDto {
     @Pattern(message = "Invalid surname format", regexp = "^[А-їA-z`']{3,}$")
     private String surname;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date birthdate;
 
     @Null(groups = OnCreate.class, message = "Is account banned should be empty")
