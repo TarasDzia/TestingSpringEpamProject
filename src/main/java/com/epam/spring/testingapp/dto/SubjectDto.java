@@ -16,10 +16,10 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 @Builder
 public class SubjectDto {
-    @Null(message = "Id of subject must be absent")
+    @Null(message = "{null.subject.id}")
     private Integer id;
 
-    @NotBlank(message = "Subject name can`t be empty")
+    @NotBlank(message = "{notBlank.subject.name}")
     @Pattern(message = "Invalid subject name format", regexp = "^[`'\\s\\wА-ї]{2,}$")
     private String name;
 }

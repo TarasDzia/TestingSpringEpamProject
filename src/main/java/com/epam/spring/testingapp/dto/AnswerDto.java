@@ -13,13 +13,13 @@ import javax.validation.constraints.Null;
 @AllArgsConstructor
 @Builder
 public class AnswerDto {
-    @Null(message = "Id of answer must be absent")
+    @Null(message = "{null.answer.id}")
     private Integer id;
 
-    @Null(message = "Id of question in witch this answer occurs must be absent")
+    @Null(message = "{null.answer.questionId}")
     private Integer questionId;
 
-    @NotBlank(message = "Answer description can`t be empty")
+    @NotBlank(message = "{null.answer.description}")
     private String description;
 
     private boolean correct;

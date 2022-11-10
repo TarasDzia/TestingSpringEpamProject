@@ -17,13 +17,13 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class QuestionDto {
-    @Null(message = "Id of question must be absent")
+    @Null(message = "{null.question.id}")
     private Integer id;
 
-    @Null(message = "Id of test in witch this question occurs must be absent")
+    @Null(message = "{null.question.testId}")
     private Integer testId;
 
-    @NotBlank(message = "Question description can`t be empty")
+    @NotBlank(message = "{notBlank.question.description}")
     private String description;
 
     private List<AnswerDto> answers;

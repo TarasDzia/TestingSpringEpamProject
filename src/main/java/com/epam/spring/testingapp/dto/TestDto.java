@@ -20,21 +20,21 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class TestDto {
-    @Null(message = "Id of test must be absent")
+    @Null(message = "{null.test.id}")
     private Integer id;
 
-    @Null(message = "Id of subject in witch this test occurs must be absent")
+    @Null(message = "{null.test.subjectId}")
     private Integer subjectId;
 
-    @NotBlank(message = "Test name can`t be empty")
-    @Pattern(message = "Invalid test name format", regexp = "^[`'\\s\\wА-ї]{2,}$")
+    @NotBlank(message = "{notBlank.test.name}")
+    @Pattern(message = "{pattern.test.name}", regexp = "^[`'\\s\\wА-ї]{2,}$")
     private String name;
 
     @NotNull
-    @Range(min = 5, max = 180, message = "Test duration have to be between 5 and 180 minutes")
+    @Range(min = 5, max = 180, message = "{range.test.duration}")
     private Integer duration;
 
-    @NotNull(message = "Test difficult must be specified")
+    @NotNull(message = "{notNull.test.difficult}")
     private TestDifficult difficult;
     private List<QuestionDto> questions;
 }

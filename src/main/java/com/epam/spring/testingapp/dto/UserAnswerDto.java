@@ -16,8 +16,8 @@ import java.util.Set;
 @Builder
 public class UserAnswerDto {
     @NotNull
-    @Min(1)
+    @Min(value = 1, message = "{min.userAnswer.questionId}")
     private Integer questionId;
-    @NotNull
+    @NotNull(message = "Answers ids shouldn`t be absent")
     private Set<Integer> answerIds;
 }
