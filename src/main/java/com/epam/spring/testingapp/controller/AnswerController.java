@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -24,7 +25,7 @@ public class AnswerController {
     private final AnswerService answerService;
 
     @GetMapping("{questionId}/answer")
-    public List<AnswerDto> findAll(@PathVariable @Min(1) int questionId) {
+    public Set<AnswerDto> findAll(@PathVariable @Min(1) int questionId) {
         log.info("findAll({})", questionId);
         return answerService.findAll(questionId);
     }

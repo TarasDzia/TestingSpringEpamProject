@@ -23,6 +23,6 @@ public class Subject {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "subject")
     private List<Test> tests;
 }

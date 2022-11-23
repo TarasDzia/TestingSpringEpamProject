@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -26,5 +27,5 @@ public class QuestionDto {
     @NotBlank(message = "{notBlank.question.description}")
     private String description;
 
-    private List<AnswerDto> answers;
+    private Set<AnswerDto> answers;
 }

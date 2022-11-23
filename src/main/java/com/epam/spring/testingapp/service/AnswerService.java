@@ -2,10 +2,10 @@ package com.epam.spring.testingapp.service;
 
 import com.epam.spring.testingapp.dto.AnswerDto;
 
-import java.util.List;
+import java.util.Set;
 
 public interface AnswerService {
-    List<AnswerDto> findAll(int questionId);
+    Set<AnswerDto> findAll(int questionId);
 
     AnswerDto find(int answerId);
 

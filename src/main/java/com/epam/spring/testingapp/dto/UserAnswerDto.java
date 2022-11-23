@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.util.Set;
 
 @Data
@@ -15,6 +16,9 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 public class UserAnswerDto {
+    @Null(message = "{null.userAnswer.id}")
+    private Integer id;
+
     @NotNull
     @Min(value = 1, message = "{min.userAnswer.questionId}")
     private Integer questionId;

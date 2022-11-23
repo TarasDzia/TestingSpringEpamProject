@@ -17,6 +17,5 @@ public interface SubjectMapper {
     List<Subject> subjectsDtosToSubjects(List<SubjectDto> subjectDtos);
 
     SubjectDto subjectToSubjectDto(Subject subject);
-    @Mapping(target = "id", ignore = true)
     Subject subjectDtoToSubject(SubjectDto subjectDto);
 }

@@ -8,17 +8,17 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper
 public interface AnswerMapper {
     AnswerMapper INSTANCE = Mappers.getMapper(AnswerMapper.class);
 
-    List<AnswerDto> answersToAnswersDtos(List<Answer> answers);
-    List<Answer> answersDtosToAnswers(List<AnswerDto> answerDtos);
-    @Mapping(target = "questionId", source = "answer.question.id")
+    Set<AnswerDto> mapAnswerDtoSet(Set<Answer> answers);
+    Set<Answer> mapAnswerSet(Set<AnswerDto> answerDtos);
+    @Mapping(target = "questionId", source = "question.id")
     AnswerDto answerToAnswerDto(Answer answer);
-    @Mapping(target = "question", ignore = true)
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "question", source = "questionId")
     Answer answerDtoToAnswer(AnswerDto answerDto);
 
     default Question mapQuestion(int questionId) {

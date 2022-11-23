@@ -19,7 +19,7 @@ public class Question {
     @EqualsAndHashCode.Exclude
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false, targetEntity = Test.class)
+    @ManyToOne(optional = false, targetEntity = Test.class)
     @JoinColumn(nullable = false)
     private Test test;
 

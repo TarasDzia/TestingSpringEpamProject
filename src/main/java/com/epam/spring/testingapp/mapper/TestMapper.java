@@ -11,7 +11,7 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-@Mapper
+@Mapper(uses = {QuestionMapper.class})
 public interface TestMapper {
     TestMapper INSTANCE = Mappers.getMapper(TestMapper.class);
 
@@ -19,11 +19,10 @@ public interface TestMapper {
 
     List<Test> testsDtosToTests(List<TestDto> testDtos);
 
-    @Mapping(target = "subjectId", source = "test.subject.id")
+    @Mapping(target = "subjectId", source = "subject.id")
     TestDto testToTestDto(Test test);
 
-    @Mapping(target = "subject", ignore = true)
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "subject", source = "subjectId")
     @Mapping(target = "difficult", defaultValue = "MEDIUM")
     Test testDtoToTest(TestDto testDto);
 

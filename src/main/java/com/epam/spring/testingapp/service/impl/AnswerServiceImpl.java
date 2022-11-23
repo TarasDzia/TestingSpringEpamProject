@@ -1,6 +1,5 @@
 package com.epam.spring.testingapp.service.impl;
 
-import com.epam.spring.testingapp.dto.AccountDto;
 import com.epam.spring.testingapp.dto.AnswerDto;
 import com.epam.spring.testingapp.exception.NotFoundException;
 import com.epam.spring.testingapp.mapper.AnswerMapper;
@@ -14,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -24,10 +24,10 @@ public class AnswerServiceImpl implements AnswerService {
     private final AnswerRepository answerRepository;
 
     @Override
-    public List<AnswerDto> findAll(int questionId) {
-        List<Answer> answers = answerRepository.findAllByQuestion_Id(questionId);
+    public Set<AnswerDto> findAll(int questionId) {
+        Set<Answer> answers = answerRepository.findAllByQuestion_Id(questionId);
         log.info("Founded answers from question#{} =  {}", questionId, answers);
-        return AnswerMapper.INSTANCE.answersToAnswersDtos(answers);
+        return AnswerMapper.INSTANCE.mapAnswerDtoSet(answers);
     }
 
     @Override

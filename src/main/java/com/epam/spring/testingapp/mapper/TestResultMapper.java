@@ -18,7 +18,7 @@ public interface TestResultMapper {
     List<TestResultDto> testResultsToTestResultsDtos(List<TestResult> testResults);
     List<TestResult> testResultsDtosToTestResults(List<TestResultDto> testResultDtos);
 
-    @Mapping(target = "accountId", source = "testResult.account.id")
+    @Mapping(target = "accountId", source = "account.id")
     TestResultDto testResultToTestResultDto(TestResult testResult);
 
     @Mapping(target = "account", source = "accountId")

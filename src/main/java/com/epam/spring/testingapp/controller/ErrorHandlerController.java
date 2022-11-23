@@ -1,11 +1,9 @@
 package com.epam.spring.testingapp.controller;
 
 import com.epam.spring.testingapp.dto.ErrorDto;
-import com.epam.spring.testingapp.exception.NotFoundException;
-import com.epam.spring.testingapp.exception.SuchEntityAlreadyExist;
+import com.epam.spring.testingapp.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
-import java.lang.reflect.Parameter;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
@@ -29,10 +26,31 @@ class ErrorHandlerController {
         return ErrorDto.builder().message(e.getMessage()).time(LocalDateTime.now()).build();
     }
 
+    @ExceptionHandler(UnprocessableEntityException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    ErrorDto handleUnprocessableEntityException(UnprocessableEntityException e) {
+        log.warn("handleUnprocessableEntityException with message={}", e.getMessage());
+        return ErrorDto.builder().message(e.getMessage()).time(LocalDateTime.now()).build();
+    }
+
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     ErrorDto handleNotFoundException(NotFoundException e) {
         log.warn("handleNotFoundException with message={}", e.getMessage());
+        return ErrorDto.builder().message(e.getMessage()).time(LocalDateTime.now()).build();
+    }
+
+    @ExceptionHandler(SequenceNumberOutOfBoundsException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    ErrorDto handleSequenceNumberOutOfBoundsException(SequenceNumberOutOfBoundsException e) {
+        log.warn("handleSequenceNumberOutOfBoundsException with message={}", e.getMessage());
+        return ErrorDto.builder().message(e.getMessage()).time(LocalDateTime.now()).build();
+    }
+
+    @ExceptionHandler(NoTestRunningForAccountException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    ErrorDto handleNoTestRunningForAccountException(NoTestRunningForAccountException e) {
+        log.warn("handleNoTestRunningForAccountException with message={}", e.getMessage());
         return ErrorDto.builder().message(e.getMessage()).time(LocalDateTime.now()).build();
     }
 
