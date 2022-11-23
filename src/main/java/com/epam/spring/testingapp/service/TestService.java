@@ -1,11 +1,12 @@
 package com.epam.spring.testingapp.service;
 
 import com.epam.spring.testingapp.dto.TestDto;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface TestService {
-    List<TestDto> findAll(String search, String sorting, Integer subject);
+    List<TestDto> findAll(String search, Integer subjectId, Pageable pageable);
 
     TestDto update(TestDto testDto, int testId);
 

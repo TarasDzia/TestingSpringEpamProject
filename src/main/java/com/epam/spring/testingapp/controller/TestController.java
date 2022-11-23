@@ -6,6 +6,11 @@ import com.epam.spring.testingapp.exception.NotFoundException;
 import com.epam.spring.testingapp.service.TestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,20 +28,16 @@ public class TestController {
     private final TestService testService;
 
     @GetMapping("/test")
-    public List<TestDto> findAll(@RequestParam(required = false) String search, @RequestParam(required = false) String sorting, @PathVariable(required = false) Integer subjectId) {
-        log.info("findAll({}, {}, {})", search, sorting, subjectId);
-        return testService.findAll(search, sorting, subjectId);
+    public List<TestDto> findAll(@RequestParam(required = false) String search, @RequestParam(required = false) Integer subjectId,
+                                 Pageable pageable) {
+        log.info("findAll({}, {}, {})", search,  subjectId, pageable);
+        return testService.findAll(search, subjectId, pageable);
     }
 
     @GetMapping("/test/{testId}")
     public TestDto find(@PathVariable @Min(1) int testId) {
         log.info("find({})", testId);
-
-        TestDto testDto = testService.find(testId);
-        if(Objects.isNull(testDto)){
-            throw new NotFoundException("Test with id %s not found".formatted(testId));
-        }
-        return testDto;
+        return testService.find(testId);
     }
 
     @PostMapping("/subject/{subjectId}/test")
@@ -49,20 +50,13 @@ public class TestController {
     @PutMapping("/test/{testId}")
     public TestDto update(@RequestBody @Validated(OnUpdate.class) TestDto testDto, @PathVariable @Min(1) int testId) {
         log.info("update({}, {})", testDto, testId);
-
-        if(Objects.isNull(testService.find(testId))){
-            throw new NotFoundException("Test with id %s not found".formatted(testId));
-        }
         return testService.update(testDto, testId);
     }
 
     @DeleteMapping("/test/{testId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable @Min(1) int testId) {
         log.info("delete({})", testId);
-
-        if(Objects.isNull(testService.find(testId))){
-            throw new NotFoundException("Test with id %s not found".formatted(testId));
-        }
         testService.delete(testId);
     }
 

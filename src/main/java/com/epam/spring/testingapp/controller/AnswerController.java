@@ -1,9 +1,6 @@
 package com.epam.spring.testingapp.controller;
 
-import com.epam.spring.testingapp.dto.AccountDto;
 import com.epam.spring.testingapp.dto.AnswerDto;
-import com.epam.spring.testingapp.dto.QuestionDto;
-import com.epam.spring.testingapp.dto.TestDto;
 import com.epam.spring.testingapp.dto.group.OnUpdate;
 import com.epam.spring.testingapp.exception.NotFoundException;
 import com.epam.spring.testingapp.service.AnswerService;
@@ -35,38 +32,26 @@ public class AnswerController {
     @GetMapping("/answer/{answerId}")
     public AnswerDto find(@PathVariable @Min(1) int answerId) {
         log.info("find({})", answerId);
-
-        AnswerDto answerDto = answerService.find(answerId);
-        if(Objects.isNull(answerDto)){
-            throw new NotFoundException("Answer with id %s not found".formatted(answerId));
-        }
-        return answerDto;
+        return answerService.find(answerId);
     }
 
     @PostMapping("{questionId}/answer")
     @ResponseStatus(HttpStatus.CREATED)
     public AnswerDto create(@RequestBody @Valid AnswerDto answerDto, @PathVariable @Min(1) int questionId) {
         log.info("create({}, {})", answerDto, questionId);
-        return answerService.create(answerDto, questionId);
+        return answerService.createForQuestion(answerDto, questionId);
     }
 
     @PutMapping("/answer/{answerId}")
     public AnswerDto update(@RequestBody @Validated(OnUpdate.class) AnswerDto answerDto, @PathVariable @Min(1) int answerId) {
         log.info("update({}, {})", answerDto, answerId);
-
-        if(Objects.isNull(answerService.find(answerId))){
-            throw new NotFoundException("Answer with id %s not found".formatted(answerId));
-        }
         return answerService.update(answerDto, answerId);
     }
 
     @DeleteMapping("/answer/{answerId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable @Min(1) int answerId) {
         log.info("delete({})", answerId);
-
-        if(Objects.isNull(answerService.find(answerId))){
-            throw new NotFoundException("Answer with id %s not found".formatted(answerId));
-        }
         answerService.delete(answerId);
     }
 }

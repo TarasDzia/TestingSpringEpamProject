@@ -9,7 +9,7 @@ public interface AnswerService {
 
     AnswerDto find(int answerId);
 
-    AnswerDto create(AnswerDto answerDto, int questionId);
+    AnswerDto createForQuestion(AnswerDto answerDto, int questionId);
 
     AnswerDto update(AnswerDto answerDto, int answerId);
 

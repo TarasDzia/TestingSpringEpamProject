@@ -40,21 +40,13 @@ public class SubjectController {
     @PutMapping("/{subjectId}")
     public SubjectDto update(@RequestBody @Validated(OnUpdate.class) SubjectDto subjectDto, @PathVariable @Min(1) int subjectId) {
         log.info("update({}, {})", subjectDto, subjectId);
-
-        if(Objects.isNull(subjectService.find(subjectId))){
-            throw new NotFoundException("Subject with id %s not found".formatted(subjectId));
-        }
-
         return subjectService.update(subjectDto, subjectId);
     }
 
     @DeleteMapping("/{subjectId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable @Min(1) int subjectId) {
         log.info("delete({})", subjectId);
-
-        if(Objects.isNull(subjectService.find(subjectId))){
-            throw new NotFoundException("Subject with id %s not found".formatted(subjectId));
-        }
         subjectService.delete(subjectId);
     }
 }

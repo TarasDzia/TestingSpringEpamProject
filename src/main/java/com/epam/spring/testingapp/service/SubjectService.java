@@ -7,12 +7,12 @@ import java.util.List;
 public interface SubjectService {
     List<SubjectDto> findAll();
 
-    SubjectDto create(SubjectDto subjectDto);
+    SubjectDto find(int subjectId);
 
-    void delete(int subjectId);
+    SubjectDto create(SubjectDto subjectDto);
 
     SubjectDto update(SubjectDto subjectDto, int subjectId);
 
-    SubjectDto find(int subjectId);
+    void delete(int subjectId);
 
 }

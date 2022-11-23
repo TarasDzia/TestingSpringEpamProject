@@ -6,6 +6,7 @@ import com.epam.spring.testingapp.dto.UserAnswerDto;
 import com.epam.spring.testingapp.service.TestResultService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,7 @@ public class TestResultController {
     }
 
     @PostMapping("test/{testId}/pass")
+    @ResponseStatus(HttpStatus.CREATED)
 //    todo inject spring security principal object to get current user that passing test
     public TestResultDto passTest(@RequestBody @Valid Set<UserAnswerDto> userAnswers, @PathVariable @Min(1) int testId, Principal principal) {
 //        AccountDto currentAccount = (AccountDto) principal;
