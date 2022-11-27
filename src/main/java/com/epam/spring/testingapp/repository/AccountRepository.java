@@ -17,5 +17,4 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
             " (:accountRole is null or a.accountRole = :accountRole) and " +
             " (:search = '' or a.email like %:search% or a.firstname like %:search% or a.surname like %:search%)")
     List<Account> findAllByAccountRole(String search, AccountRole accountRole, Pageable pageable);
-//    or a.firstname like %:search% or a.surname like %:search%
 }

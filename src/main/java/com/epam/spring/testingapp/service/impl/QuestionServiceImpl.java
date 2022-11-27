@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Slf4j
@@ -34,12 +35,13 @@ public class QuestionServiceImpl implements QuestionService {
                 .orElseThrow(() -> new NotFoundException("Question with id %s not exist".formatted(questionId)));
 
         log.info("Founded question = {}", question);
-        return QuestionMapper.INSTANCE.mapDto(question);
+        return QuestionMapper.INSTANCE.mapQuestionDto(question);
     }
 
     @Override
+    @Transactional
     public QuestionDto createForTest(QuestionDto questionDto, int testId) {
-        Question question = QuestionMapper.INSTANCE.mapEntity(questionDto);
+        Question question = QuestionMapper.INSTANCE.mapQuestion(questionDto);
 
         Test test = testRepository.findById(testId)
                 .orElseThrow(() -> new NotFoundException("Test with id %s not exist".formatted(testId)));
@@ -48,24 +50,26 @@ public class QuestionServiceImpl implements QuestionService {
         question = questionRepository.save(question);
 
         log.info("Created question = {}", question);
-        return QuestionMapper.INSTANCE.mapDto(question);
+        return QuestionMapper.INSTANCE.mapQuestionDto(question);
     }
 
     @Override
+    @Transactional
     public QuestionDto update(QuestionDto questionDto, int questionId) {
         questionRepository.findById(questionId)
                 .orElseThrow(() -> new NotFoundException("Question with id %s not exist".formatted(questionId)));
 
-        Question question = QuestionMapper.INSTANCE.mapEntity(questionDto);
+        Question question = QuestionMapper.INSTANCE.mapQuestion(questionDto);
         question.setId(questionId);
 
         question = questionRepository.save(question);
 
         log.info("Updated question#{} to = {}", questionId, question);
-        return QuestionMapper.INSTANCE.mapDto(question);
+        return QuestionMapper.INSTANCE.mapQuestionDto(question);
     }
 
     @Override
+    @Transactional
     public void delete(int questionId) {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new NotFoundException("Question with id %s not exist".formatted(questionId)));

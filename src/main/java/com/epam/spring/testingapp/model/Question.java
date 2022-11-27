@@ -17,16 +17,17 @@ public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Exclude
-    private Integer id;
+    private int id;
 
     @ManyToOne(optional = false, targetEntity = Test.class)
     @JoinColumn(nullable = false)
+    @ToString.Exclude
     private Test test;
 
     @Column(nullable = false)
     private String description;
 
-    @ToString.Exclude
+
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private Set<Answer> answers;

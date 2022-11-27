@@ -1,12 +1,12 @@
 package com.epam.spring.testingapp.service;
 
 import com.epam.spring.testingapp.dto.TestResultDto;
-import com.epam.spring.testingapp.dto.UserAnswerDto;
+import com.epam.spring.testingapp.model.RunningTest;
+import com.epam.spring.testingapp.model.TestResult;
 
 import java.util.List;
-import java.util.Set;
 
 public interface TestResultService {
     List<TestResultDto> findAllByAccount(int accountId);
-    TestResultDto passTest(Set<UserAnswerDto> userAnswers, int testId, int accountId);
+    TestResult saveTestResult(int score, RunningTest runningTest);
 }

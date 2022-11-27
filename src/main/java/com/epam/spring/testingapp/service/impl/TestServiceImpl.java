@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,7 +29,7 @@ public class TestServiceImpl implements TestService {
         search  = Objects.isNull(search)? "" : search;
         List<Test> tests = testRepository.findAllBySubjectId(search, subjectId, pageable);
         log.info("Founded tests = {}", tests);
-        return TestMapper.INSTANCE.testsToTestsDtos(tests);
+        return TestMapper.INSTANCE.toTestsDtos(tests);
     }
 
     @Override
@@ -37,37 +38,40 @@ public class TestServiceImpl implements TestService {
                 .orElseThrow(() -> new NotFoundException("Test with id %s not exist".formatted(testId)));
 
         log.info("Founded test = {}", test);
-        return TestMapper.INSTANCE.testToTestDto(test);
+        return TestMapper.INSTANCE.toTestDto(test);
     }
 
     @Override
+    @Transactional
     public TestDto update(TestDto testDto, int testId) {
         testRepository.findById(testId)
                 .orElseThrow(() -> new NotFoundException("Test with id %s not exist".formatted(testId)));
 
-        Test test = TestMapper.INSTANCE.testDtoToTest(testDto);
+        Test test = TestMapper.INSTANCE.toTest(testDto);
         test.setId(testId);
 
         test = testRepository.save(test);
         log.info("Updated test#{} to = {}", testId, test);
-        return TestMapper.INSTANCE.testToTestDto(test);
+        return TestMapper.INSTANCE.toTestDto(test);
     }
 
     @Override
+    @Transactional
     public TestDto create(TestDto testDto, int subjectId) {
         Subject subject = subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new NotFoundException("Subject with id %s not exist".formatted(subjectId)));
 
-        Test test = TestMapper.INSTANCE.testDtoToTest(testDto);
+        Test test = TestMapper.INSTANCE.toTest(testDto);
 
         test.setSubject(subject);
         test = testRepository.save(test);
 
         log.info("Created {}", test);
-        return TestMapper.INSTANCE.testToTestDto(test);
+        return TestMapper.INSTANCE.toTestDto(test);
     }
 
     @Override
+    @Transactional
     public void delete(int testId) {
         Test test = testRepository.findById(testId)
                 .orElseThrow(() -> new NotFoundException("Test with id %s not exist".formatted(testId)));

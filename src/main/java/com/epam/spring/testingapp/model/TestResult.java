@@ -21,9 +21,10 @@ public class TestResult {
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    @ManyToOne(targetEntity = Test.class, optional = false)
-    @JoinColumn(name = "test_id", nullable = false)
-    private Test test;
+    @OneToOne(targetEntity = RunningTest.class, optional = false)
+    @JoinColumn(name = "runningTest_id", nullable = false)
+    @ToString.Exclude
+    private RunningTest runningTest;
 
     @Column(nullable = false)
     private int score;

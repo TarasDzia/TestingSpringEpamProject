@@ -1,6 +1,7 @@
 package com.epam.spring.testingapp.dto;
 
 import com.epam.spring.testingapp.model.enumerate.TestDifficult;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TestDto {
     @Null(message = "{null.test.id}")
     private Integer id;

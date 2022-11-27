@@ -1,6 +1,7 @@
 package com.epam.spring.testingapp.dto;
 
 import com.epam.spring.testingapp.dto.group.OnUpdate;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class QuestionDto {
     @Null(message = "{null.question.id}")
     private Integer id;

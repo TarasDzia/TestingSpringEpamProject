@@ -54,13 +54,6 @@ class ErrorHandlerController {
         return ErrorDto.builder().message(e.getMessage()).time(LocalDateTime.now()).build();
     }
 
-    @ExceptionHandler(SuchEntityAlreadyExist.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    ErrorDto handleSuchEntityAlreadyExist(SuchEntityAlreadyExist e) {
-        log.warn("handleSuchEntityAlreadyExist with message={}", e.getMessage());
-        return ErrorDto.builder().message(e.getMessage()).time(LocalDateTime.now()).build();
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ErrorDto handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {

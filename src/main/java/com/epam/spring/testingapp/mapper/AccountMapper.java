@@ -11,10 +11,10 @@ import java.util.List;
 public interface AccountMapper {
     AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
 
-    List<AccountDto> accountsToAccountDtos(List<Account> accounts);
-    List<Account> accountsDtosToAccounts(List<AccountDto> accountDtos);
+    List<AccountDto> toAccountDtos(List<Account> accounts);
+    List<Account> toAccounts(List<AccountDto> accountDtos);
     @Mapping(target = "password", ignore = true)
-    AccountDto accountToAccountDto(Account account);
+    AccountDto toAccountDto(Account account);
     @Mapping(target = "accountRole",  defaultValue = "USER")
-    Account accountDtoToAccount(AccountDto accountDto);
+    Account toAccount(AccountDto accountDto);
 }

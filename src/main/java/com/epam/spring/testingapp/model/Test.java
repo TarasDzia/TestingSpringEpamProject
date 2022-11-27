@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -32,7 +33,7 @@ public class Test {
     @Column(nullable = false)
     private TestDifficult difficult;
 
-    @ToString.Exclude
+
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "test", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Question> questions;
