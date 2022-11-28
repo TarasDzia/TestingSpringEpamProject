@@ -1,9 +1,6 @@
 package com.epam.spring.testingapp.service.impl;
 
-import com.epam.spring.testingapp.dto.*;
 import com.epam.spring.testingapp.exception.*;
-import com.epam.spring.testingapp.mapper.QuestionMapper;
-import com.epam.spring.testingapp.mapper.RunningTestMapper;
 import com.epam.spring.testingapp.mapper.TestResultMapper;
 import com.epam.spring.testingapp.model.*;
 import com.epam.spring.testingapp.repository.AccountRepository;
@@ -34,7 +31,7 @@ public class RunningTestServiceImpl implements RunningTestService {
     private final TestResultService testResultService;
 
     @Override
-    public RunningTestDto startTest(int testId, int accountId) {
+    public RunningTest startTest(int testId, int accountId) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new NotFoundException("Account with id %s not exist".formatted(accountId)));
 //      Finish other test that can running for this account
@@ -50,11 +47,11 @@ public class RunningTestServiceImpl implements RunningTestService {
                 .build();
 
         runningTestRepository.save(runningTest);
-        return RunningTestMapper.INSTANCE.toRunningTestDto(runningTest);
+        return runningTest;
     }
 
     @Override
-    public RunningTestDto addUserAnswer(Set<Integer> answersIds, int accountId) {
+    public RunningTest addUserAnswer(Set<Integer> answersIds, int accountId) {
         RunningTest runningTest = runningTestRepository.findFirstByAccount_IdAndTestResultNull(accountId).orElseThrow(() ->
                 new NoTestRunningForAccountException("Currently for account with id %s no test is running".formatted(accountId)));
         log.info("Current {}", runningTest);
@@ -90,10 +87,10 @@ public class RunningTestServiceImpl implements RunningTestService {
         runningTestRepository.save(runningTest);
         log.info("Saved answersIds: {}", runningTest.getUserAnswers());
 
-        return RunningTestMapper.INSTANCE.toRunningTestDto(runningTest);
+        return runningTest;
     }
 
-    public QuestionDto getQuestion(Integer sequenceNumber, Integer accountId) {
+    public Question getQuestion(Integer sequenceNumber, Integer accountId) {
         RunningTest runningTest = runningTestRepository.findFirstByAccount_IdAndTestResultNull(accountId).orElseThrow(() ->
                 new NoTestRunningForAccountException("Currently for account with id %s no test is running".formatted(accountId)));
 
@@ -112,11 +109,11 @@ public class RunningTestServiceImpl implements RunningTestService {
         }
 
         log.info("Founded question = {}", question);
-        return QuestionMapper.INSTANCE.mapDtoWithoutCorrect(question);
+        return question;
     }
 
     @Override
-    public TestResultDto finishTestById(int accountId) {
+    public TestResult finishTestById(int accountId) {
         log.info("Finishing current test for account#{}", accountId);
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new NotFoundException("Account with id %s not found".formatted(accountId)));
@@ -135,7 +132,7 @@ public class RunningTestServiceImpl implements RunningTestService {
         runningTestRepository.save(runningTest);
 
         log.info("Test#{}#{} passed with result = {}", currentTest.getId(), currentTest.getName(), testResult);
-        return TestResultMapper.INSTANCE.toTestResultDto(testResult);
+        return testResult;
     }
 
     private int calculateScoreForRunningTest(RunningTest runningTest) {
@@ -204,22 +201,4 @@ public class RunningTestServiceImpl implements RunningTestService {
             throw new TestTimeIsUpException("The runningTest#%s time is up. For test created result with id %s".formatted(runningTest.getId(), testResult.getId()));
         }
     }
-
-    private void finishAllOverdueTests(int accountId) {
-        List<RunningTest> runningTests = runningTestRepository.findAllNotFinished(accountId);
-        for (RunningTest runningTest : runningTests) {
-            LocalDateTime finishTime = runningTest.getStartTime().toLocalDateTime().plusMinutes(runningTest.getTest().getDuration());
-
-            if(LocalDateTime.now().isAfter(finishTime)){
-                log.debug("Stopping {}", runningTest);
-                //      creating test result
-                TestResult testResult = testResultService.saveTestResult(calculateScoreForRunningTest(runningTest), runningTest);
-                //      adding results to running test.
-                runningTestRepository.save(runningTest);
-                log.debug("Result for closed test = {}", testResult);
-            }
-        }
-    }
-
-
 }

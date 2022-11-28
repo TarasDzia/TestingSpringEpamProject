@@ -1,6 +1,5 @@
 package com.epam.spring.testingapp.service.impl;
 
-import com.epam.spring.testingapp.dto.TestDto;
 import com.epam.spring.testingapp.exception.NotFoundException;
 import com.epam.spring.testingapp.mapper.TestMapper;
 import com.epam.spring.testingapp.model.Subject;
@@ -25,49 +24,45 @@ public class TestServiceImpl implements TestService {
     private final SubjectRepository subjectRepository;
 
     @Override
-    public List<TestDto> findAll(String search, Integer subjectId, Pageable pageable) {
+    public List<Test> findAll(String search, Integer subjectId, Pageable pageable) {
         search  = Objects.isNull(search)? "" : search;
         List<Test> tests = testRepository.findAllBySubjectId(search, subjectId, pageable);
         log.info("Founded tests = {}", tests);
-        return TestMapper.INSTANCE.toTestsDtos(tests);
+        return tests;
     }
 
     @Override
-    public TestDto find(int testId) {
+    public Test find(int testId) {
         Test test = testRepository.findById(testId)
                 .orElseThrow(() -> new NotFoundException("Test with id %s not exist".formatted(testId)));
 
         log.info("Founded test = {}", test);
-        return TestMapper.INSTANCE.toTestDto(test);
+        return test;
     }
 
     @Override
     @Transactional
-    public TestDto update(TestDto testDto, int testId) {
+    public Test update(Test test, int testId) {
         testRepository.findById(testId)
                 .orElseThrow(() -> new NotFoundException("Test with id %s not exist".formatted(testId)));
-
-        Test test = TestMapper.INSTANCE.toTest(testDto);
         test.setId(testId);
 
         test = testRepository.save(test);
         log.info("Updated test#{} to = {}", testId, test);
-        return TestMapper.INSTANCE.toTestDto(test);
+        return test;
     }
 
     @Override
     @Transactional
-    public TestDto create(TestDto testDto, int subjectId) {
+    public Test create(Test test, int subjectId) {
         Subject subject = subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new NotFoundException("Subject with id %s not exist".formatted(subjectId)));
-
-        Test test = TestMapper.INSTANCE.toTest(testDto);
 
         test.setSubject(subject);
         test = testRepository.save(test);
 
         log.info("Created {}", test);
-        return TestMapper.INSTANCE.toTestDto(test);
+        return test;
     }
 
     @Override

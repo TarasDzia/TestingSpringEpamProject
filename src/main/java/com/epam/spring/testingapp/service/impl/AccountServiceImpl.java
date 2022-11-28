@@ -1,6 +1,5 @@
 package com.epam.spring.testingapp.service.impl;
 
-import com.epam.spring.testingapp.dto.AccountDto;
 import com.epam.spring.testingapp.exception.NotFoundException;
 import com.epam.spring.testingapp.exception.UnprocessableEntityException;
 import com.epam.spring.testingapp.mapper.AccountMapper;
@@ -25,27 +24,25 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
 
     @Override
-    public List<AccountDto> findAll(String search, AccountRole role, Pageable pageable) {
+    public List<Account> findAll(String search, AccountRole role, Pageable pageable) {
         search  = Objects.isNull(search)? "" : search;
         List<Account> accounts = accountRepository.findAllByAccountRole(search, role, pageable);
 
         log.info("Founded accounts =  {}", accounts);
-        return AccountMapper.INSTANCE.toAccountDtos(accounts);
+        return accounts;
     }
 
     @Override
-    public AccountDto find(int accountId) {
+    public Account find(int accountId) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() ->  new NotFoundException("Account with id %s not found".formatted(accountId)));
 
         log.info("Founded account =  {}", account);
-        return AccountMapper.INSTANCE.toAccountDto(account);
+        return account;
     }
 
     @Override
-    public AccountDto register(AccountDto accountDto) {
-        Account account = AccountMapper.INSTANCE.toAccount(accountDto);
-
+    public Account register(Account account) {
         try {
             account = accountRepository.save(account);
         }catch(DataIntegrityViolationException e ){
@@ -53,16 +50,15 @@ public class AccountServiceImpl implements AccountService {
         }
 
         log.info("Register account =  {}", account);
-        return AccountMapper.INSTANCE.toAccountDto(account);
+        return account;
     }
 
     @Override
     @Transactional
-    public AccountDto update(AccountDto accountDto, int accountId) {
+    public Account update(Account account, int accountId) {
         accountRepository.findById(accountId)
                 .orElseThrow(() ->  new NotFoundException("Account with id %s not found".formatted(accountId)));
 
-        Account account = AccountMapper.INSTANCE.toAccount(accountDto);
         account.setId(accountId);
 
         try {
@@ -72,6 +68,6 @@ public class AccountServiceImpl implements AccountService {
         }
 
         log.info("Updated {}", account);
-        return AccountMapper.INSTANCE.toAccountDto(account);
+        return account;
     }
 }

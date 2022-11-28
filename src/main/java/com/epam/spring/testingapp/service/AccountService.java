@@ -1,18 +1,17 @@
 package com.epam.spring.testingapp.service;
 
-import com.epam.spring.testingapp.dto.AccountDto;
-import com.epam.spring.testingapp.dto.TestDto;
+import com.epam.spring.testingapp.model.Account;
 import com.epam.spring.testingapp.model.enumerate.AccountRole;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface AccountService {
-    List<AccountDto> findAll(String search, AccountRole role, Pageable pageable);
+    List<Account> findAll(String search, AccountRole role, Pageable pageable);
 
-    AccountDto find(int accountId);
+    Account find(int accountId);
 
-    AccountDto register(AccountDto account);
+    Account register(Account account);
 
-    AccountDto update(AccountDto account, int accountId);
+    Account update(Account account, int accountId);
 }

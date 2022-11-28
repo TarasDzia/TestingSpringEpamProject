@@ -1,6 +1,7 @@
 package com.epam.spring.testingapp.controller;
 
 import com.epam.spring.testingapp.dto.TestResultDto;
+import com.epam.spring.testingapp.mapper.TestResultMapper;
 import com.epam.spring.testingapp.service.RunningTestService;
 import com.epam.spring.testingapp.service.TestResultService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,6 @@ public class TestResultController {
     @GetMapping("/account/{accountId}/test-result")
     public List<TestResultDto> findAll(@PathVariable @Min(1) int accountId) {
         log.info("findAll({})", accountId);
-        return testResultService.findAllByAccount(accountId);
+        return TestResultMapper.INSTANCE.toTestResultsDtos(testResultService.findAllByAccount(accountId));
     }
 }

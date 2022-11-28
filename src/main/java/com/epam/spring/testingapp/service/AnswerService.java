@@ -1,17 +1,17 @@
 package com.epam.spring.testingapp.service;
 
-import com.epam.spring.testingapp.dto.AnswerDto;
+import com.epam.spring.testingapp.model.Answer;
 
 import java.util.Set;
 
 public interface AnswerService {
-    Set<AnswerDto> findAll(int questionId);
+    Set<Answer> findAll(int questionId);
 
-    AnswerDto find(int answerId);
+    Answer find(int answerId);
 
-    AnswerDto createForQuestion(AnswerDto answerDto, int questionId);
+    Answer createForQuestion(Answer answer, int questionId);
 
-    AnswerDto update(AnswerDto answerDto, int answerId);
+    Answer update(Answer answer, int answerId);
 
     void delete(int answerId);
 }

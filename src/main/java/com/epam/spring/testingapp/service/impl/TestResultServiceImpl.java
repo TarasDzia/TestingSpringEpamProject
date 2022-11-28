@@ -1,6 +1,5 @@
 package com.epam.spring.testingapp.service.impl;
 
-import com.epam.spring.testingapp.dto.*;
 import com.epam.spring.testingapp.mapper.TestResultMapper;
 import com.epam.spring.testingapp.model.*;
 import com.epam.spring.testingapp.repository.TestResultRepository;
@@ -21,11 +20,11 @@ public class TestResultServiceImpl implements TestResultService {
     private final TestResultRepository testResultRepository;
 
     @Override
-    public List<TestResultDto> findAllByAccount(int accountId) {
+    public List<TestResult> findAllByAccount(int accountId) {
         List<TestResult> testResults = testResultRepository.findByAccount_Id(accountId);
 
         log.info("Founded testResults of account#{} = {}", accountId, testResults);
-        return TestResultMapper.INSTANCE.toTestResultsDtos(testResults);
+        return testResults;
     }
 
     @Override

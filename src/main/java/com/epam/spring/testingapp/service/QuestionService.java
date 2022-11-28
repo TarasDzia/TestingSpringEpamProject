@@ -1,17 +1,17 @@
 package com.epam.spring.testingapp.service;
 
-import com.epam.spring.testingapp.dto.QuestionDto;
+import com.epam.spring.testingapp.model.Question;
 
 import java.util.List;
 
 public interface QuestionService {
-    List<QuestionDto> findAll(int testId);
+    List<Question> findAll(int testId);
 
-    QuestionDto find(int questionId);
+    Question find(int questionId);
 
-    QuestionDto createForTest(QuestionDto questionDto, int testId);
+    Question createForTest(Question questionDto, int testId);
 
-    QuestionDto update(QuestionDto questionDto, int questionId);
+    Question update(Question question, int questionId);
 
     void delete(int questionId);
 }

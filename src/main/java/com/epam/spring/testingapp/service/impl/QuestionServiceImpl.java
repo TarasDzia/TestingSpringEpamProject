@@ -1,6 +1,5 @@
 package com.epam.spring.testingapp.service.impl;
 
-import com.epam.spring.testingapp.dto.QuestionDto;
 import com.epam.spring.testingapp.exception.NotFoundException;
 import com.epam.spring.testingapp.mapper.QuestionMapper;
 import com.epam.spring.testingapp.model.Question;
@@ -23,26 +22,24 @@ public class QuestionServiceImpl implements QuestionService {
     public final TestRepository testRepository;
 
     @Override
-    public List<QuestionDto> findAll(int testId) {
+    public List<Question> findAll(int testId) {
         List<Question> questions = questionRepository.findAllByTestId(testId);
         log.info("Founded questions = {}", questions);
-        return QuestionMapper.INSTANCE.mapQuestionsDtos(questions);
+        return questions;
     }
 
     @Override
-    public QuestionDto find(int questionId) {
+    public Question find(int questionId) {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new NotFoundException("Question with id %s not exist".formatted(questionId)));
 
         log.info("Founded question = {}", question);
-        return QuestionMapper.INSTANCE.mapQuestionDto(question);
+        return question;
     }
 
     @Override
     @Transactional
-    public QuestionDto createForTest(QuestionDto questionDto, int testId) {
-        Question question = QuestionMapper.INSTANCE.mapQuestion(questionDto);
-
+    public Question createForTest(Question question, int testId) {
         Test test = testRepository.findById(testId)
                 .orElseThrow(() -> new NotFoundException("Test with id %s not exist".formatted(testId)));
 
@@ -50,22 +47,21 @@ public class QuestionServiceImpl implements QuestionService {
         question = questionRepository.save(question);
 
         log.info("Created question = {}", question);
-        return QuestionMapper.INSTANCE.mapQuestionDto(question);
+        return question;
     }
 
     @Override
     @Transactional
-    public QuestionDto update(QuestionDto questionDto, int questionId) {
+    public Question update(Question question, int questionId) {
         questionRepository.findById(questionId)
                 .orElseThrow(() -> new NotFoundException("Question with id %s not exist".formatted(questionId)));
 
-        Question question = QuestionMapper.INSTANCE.mapQuestion(questionDto);
         question.setId(questionId);
 
         question = questionRepository.save(question);
 
         log.info("Updated question#{} to = {}", questionId, question);
-        return QuestionMapper.INSTANCE.mapQuestionDto(question);
+        return question;
     }
 
     @Override

@@ -3,6 +3,9 @@ package com.epam.spring.testingapp.controller;
 import com.epam.spring.testingapp.dto.AnswerDto;
 import com.epam.spring.testingapp.dto.group.OnUpdate;
 import com.epam.spring.testingapp.exception.NotFoundException;
+import com.epam.spring.testingapp.mapper.AccountMapper;
+import com.epam.spring.testingapp.mapper.AnswerMapper;
+import com.epam.spring.testingapp.model.Answer;
 import com.epam.spring.testingapp.service.AnswerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,26 +30,28 @@ public class AnswerController {
     @GetMapping("{questionId}/answer")
     public Set<AnswerDto> findAll(@PathVariable @Min(1) int questionId) {
         log.info("findAll({})", questionId);
-        return answerService.findAll(questionId);
+        return AnswerMapper.INSTANCE.toAnswerDtos(answerService.findAll(questionId));
     }
 
     @GetMapping("/answer/{answerId}")
     public AnswerDto find(@PathVariable @Min(1) int answerId) {
         log.info("find({})", answerId);
-        return answerService.find(answerId);
+        return AnswerMapper.INSTANCE.toAnswerDto(answerService.find(answerId));
     }
 
     @PostMapping("{questionId}/answer")
     @ResponseStatus(HttpStatus.CREATED)
     public AnswerDto create(@RequestBody @Valid AnswerDto answerDto, @PathVariable @Min(1) int questionId) {
         log.info("create({}, {})", answerDto, questionId);
-        return answerService.createForQuestion(answerDto, questionId);
+        Answer answer = AnswerMapper.INSTANCE.toAnswer(answerDto);
+        return AnswerMapper.INSTANCE.toAnswerDto(answerService.createForQuestion(answer, questionId));
     }
 
     @PutMapping("/answer/{answerId}")
     public AnswerDto update(@RequestBody @Validated(OnUpdate.class) AnswerDto answerDto, @PathVariable @Min(1) int answerId) {
         log.info("update({}, {})", answerDto, answerId);
-        return answerService.update(answerDto, answerId);
+        Answer answer = AnswerMapper.INSTANCE.toAnswer(answerDto);
+        return AnswerMapper.INSTANCE.toAnswerDto(answerService.update(answer, answerId));
     }
 
     @DeleteMapping("/answer/{answerId}")

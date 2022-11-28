@@ -1,6 +1,5 @@
 package com.epam.spring.testingapp.service.impl;
 
-import com.epam.spring.testingapp.dto.SubjectDto;
 import com.epam.spring.testingapp.exception.NotFoundException;
 import com.epam.spring.testingapp.exception.UnprocessableEntityException;
 import com.epam.spring.testingapp.mapper.SubjectMapper;
@@ -21,16 +20,14 @@ import java.util.List;
 public class SubjectServiceImpl implements SubjectService {
     private final SubjectRepository subjectRepository;
     @Override
-    public List<SubjectDto> findAll() {
+    public List<Subject> findAll() {
         List<Subject> subjects = subjectRepository.findAll();
         log.info("Founded subjects = {}", subjects);
-        return SubjectMapper.INSTANCE.toSubjectsDtos(subjects);
+        return subjects;
     }
 
     @Override
-    public SubjectDto create(SubjectDto subjectDto) {
-        Subject subject = SubjectMapper.INSTANCE.toSubject(subjectDto);
-
+    public Subject create(Subject subject) {
         try {
             subject = subjectRepository.save(subject);
         }catch(DataIntegrityViolationException e ){
@@ -38,16 +35,15 @@ public class SubjectServiceImpl implements SubjectService {
         }
 
         log.info("Created subject = {}", subject);
-        return SubjectMapper.INSTANCE.toSubjectDto(subject);
+        return subject;
     }
 
     @Override
     @Transactional
-    public SubjectDto update(SubjectDto subjectDto, int subjectId) {
+    public Subject update(Subject subject, int subjectId) {
         subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new NotFoundException("Subject with id %s not exist".formatted(subjectId)));
 
-        Subject subject = SubjectMapper.INSTANCE.toSubject(subjectDto);
         subject.setId(subjectId);
 
         try {
@@ -57,16 +53,7 @@ public class SubjectServiceImpl implements SubjectService {
         }
 
         log.info("Updated subject#{} to = {}", subjectId, subject);
-        return SubjectMapper.INSTANCE.toSubjectDto(subject);
-    }
-
-    @Override
-    public SubjectDto find(int subjectId) {
-        Subject subject = subjectRepository.findById(subjectId)
-                .orElseThrow(() -> new NotFoundException("Subject with id %s not exist".formatted(subjectId)));
-
-        log.info("Founded subject = {}", subject);
-        return SubjectMapper.INSTANCE.toSubjectDto(subject);
+        return subject;
     }
 
     @Override

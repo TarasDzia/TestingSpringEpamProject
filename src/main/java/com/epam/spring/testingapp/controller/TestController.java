@@ -3,6 +3,8 @@ package com.epam.spring.testingapp.controller;
 import com.epam.spring.testingapp.dto.TestDto;
 import com.epam.spring.testingapp.dto.group.OnUpdate;
 import com.epam.spring.testingapp.exception.NotFoundException;
+import com.epam.spring.testingapp.mapper.TestMapper;
+import com.epam.spring.testingapp.model.Test;
 import com.epam.spring.testingapp.service.TestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,26 +33,28 @@ public class TestController {
     public List<TestDto> findAll(@RequestParam(required = false) String search, @RequestParam(required = false) Integer subjectId,
                                  Pageable pageable) {
         log.info("findAll({}, {}, {})", search,  subjectId, pageable);
-        return testService.findAll(search, subjectId, pageable);
+        return TestMapper.INSTANCE.toTestsDtos(testService.findAll(search, subjectId, pageable));
     }
 
     @GetMapping("/test/{testId}")
     public TestDto find(@PathVariable @Min(1) int testId) {
         log.info("find({})", testId);
-        return testService.find(testId);
+        return TestMapper.INSTANCE.toTestDto(testService.find(testId));
     }
 
     @PostMapping("/subject/{subjectId}/test")
     @ResponseStatus(HttpStatus.CREATED)
     public TestDto create(@RequestBody @Valid TestDto testDto, @PathVariable @Min(1) int subjectId) {
         log.info("create({})", testDto);
-        return testService.create(testDto, subjectId);
+        Test test = TestMapper.INSTANCE.toTest(testDto);
+        return TestMapper.INSTANCE.toTestDto(testService.create(test, subjectId));
     }
 
     @PutMapping("/test/{testId}")
     public TestDto update(@RequestBody @Validated(OnUpdate.class) TestDto testDto, @PathVariable @Min(1) int testId) {
         log.info("update({}, {})", testDto, testId);
-        return testService.update(testDto, testId);
+        Test test = TestMapper.INSTANCE.toTest(testDto);
+        return TestMapper.INSTANCE.toTestDto(testService.update(test, testId));
     }
 
     @DeleteMapping("/test/{testId}")

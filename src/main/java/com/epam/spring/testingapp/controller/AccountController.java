@@ -4,6 +4,8 @@ import com.epam.spring.testingapp.dto.AccountDto;
 import com.epam.spring.testingapp.dto.group.OnCreate;
 import com.epam.spring.testingapp.dto.group.OnUpdate;
 import com.epam.spring.testingapp.exception.NotFoundException;
+import com.epam.spring.testingapp.mapper.AccountMapper;
+import com.epam.spring.testingapp.model.Account;
 import com.epam.spring.testingapp.model.enumerate.AccountRole;
 import com.epam.spring.testingapp.service.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -30,25 +32,27 @@ public class AccountController {
     public List<AccountDto> findAll(@RequestParam(required = false) String search, @RequestParam(required = false, name = "role") AccountRole accountRole,
                                     Pageable pageable) {
         log.info("findAll({},{},{})", search, accountRole, pageable);
-        return accountService.findAll(search, accountRole, pageable);
+        return AccountMapper.INSTANCE.toAccountDtos(accountService.findAll(search, accountRole, pageable));
     }
 
     @GetMapping("/{accountId}")
     public AccountDto find(@PathVariable @Min(1) int accountId) {
         log.info("find({})", accountId);
-        return accountService.find(accountId);
+        return AccountMapper.INSTANCE.toAccountDto(accountService.find(accountId));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AccountDto register(@RequestBody @Validated(OnCreate.class) AccountDto account) {
-        log.info("register({})", account);
-        return accountService.register(account);
+    public AccountDto register(@RequestBody @Validated(OnCreate.class) AccountDto accountDto) {
+        log.info("register({})", accountDto);
+        Account account = AccountMapper.INSTANCE.toAccount(accountDto);
+        return AccountMapper.INSTANCE.toAccountDto(accountService.register(account));
     }
 
     @PutMapping("/{accountId}")
-    public AccountDto update(@RequestBody @Validated(OnUpdate.class) AccountDto account, @PathVariable @Min(1) int accountId) {
-        log.info("update({}, {})", account, accountId);
-        return accountService.update(account, accountId);
+    public AccountDto update(@RequestBody @Validated(OnUpdate.class) AccountDto accountDto, @PathVariable @Min(1) int accountId) {
+        log.info("update({}, {})", accountDto, accountId);
+        Account account = AccountMapper.INSTANCE.toAccount(accountDto);
+        return AccountMapper.INSTANCE.toAccountDto(accountService.update(account, accountId));
     }
 }
