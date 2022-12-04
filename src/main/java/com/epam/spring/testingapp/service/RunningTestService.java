@@ -7,8 +7,8 @@ import com.epam.spring.testingapp.model.TestResult;
 import java.util.Set;
 
 public interface RunningTestService {
-    RunningTest startTest(int testId, int accountId);
+    RunningTest start(int testId, int accountId);
     RunningTest addUserAnswer(Set<Integer> answers, int accountId);
     Question getQuestion(Integer sequenceNumber, Integer accountId);
-    TestResult finishTestById(int accountId);
+    TestResult finish(int accountId);
 }

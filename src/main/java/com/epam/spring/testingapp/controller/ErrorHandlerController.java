@@ -33,6 +33,14 @@ class ErrorHandlerController {
         return ErrorDto.builder().message(e.getMessage()).time(LocalDateTime.now()).build();
     }
 
+    @ExceptionHandler(TestTimeIsUpException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    ErrorDto handleTestTimeIsUpException(TestTimeIsUpException e) {
+        log.warn("handleTestTimeIsUpException with message={}", e.getMessage());
+        return ErrorDto.builder().message(e.getMessage()).time(LocalDateTime.now()).build();
+    }
+
+
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     ErrorDto handleNotFoundException(NotFoundException e) {

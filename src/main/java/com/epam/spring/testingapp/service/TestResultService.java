@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface TestResultService {
     List<TestResult> findAllByAccount(int accountId);
-    TestResult saveTestResult(int score, RunningTest runningTest);
+    TestResult save(RunningTest runningTest);
 }

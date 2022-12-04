@@ -1,7 +1,7 @@
 package com.epam.spring.testingapp.exception;
 
 
-public class TestTimeIsUpException extends Exception {
+public class TestTimeIsUpException extends RuntimeException {
     public TestTimeIsUpException(String message) {
         super(message);
     }

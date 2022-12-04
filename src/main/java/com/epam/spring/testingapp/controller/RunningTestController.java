@@ -5,7 +5,6 @@ import com.epam.spring.testingapp.mapper.QuestionMapper;
 import com.epam.spring.testingapp.mapper.RunningTestMapper;
 import com.epam.spring.testingapp.mapper.TestResultMapper;
 import com.epam.spring.testingapp.service.RunningTestService;
-import com.epam.spring.testingapp.service.TestResultService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,7 +29,7 @@ public class RunningTestController {
     public RunningTestDto startTest(@PathVariable @Min(1) Integer testId, @RequestParam @Min(1) int accountId, Principal account){
         //      todo Take current account from security.
         log.info("startTest(testId={},accountId={})", testId, accountId);
-        return RunningTestMapper.INSTANCE.toRunningTestDto(runningTestService.startTest(testId, accountId));
+        return RunningTestMapper.INSTANCE.toRunningTestDto(runningTestService.start(testId, accountId));
     }
 
     @PatchMapping("/passing/answer")
@@ -52,7 +51,7 @@ public class RunningTestController {
     public TestResultDto finishTest(@RequestParam int accountId, Principal account){
 //      todo Take current account from security.
         log.info("finishTest({})", accountId);
-        return TestResultMapper.INSTANCE.toTestResultDto(runningTestService.finishTestById(accountId));
+        return TestResultMapper.INSTANCE.toTestResultDto(runningTestService.finish(accountId));
     }
 
 }
