@@ -40,7 +40,7 @@ public class RunningTestController {
     }
 
     @GetMapping("/passing/question/{sequenceNumber}")
-    public QuestionDto getQuestion(@PathVariable Integer sequenceNumber, @RequestParam int accountId, Principal account){
+    public QuestionDto getQuestion(@PathVariable @Min(0) Integer sequenceNumber, @RequestParam @Min(1) int accountId, Principal account){
 //      todo Take current account from security.
         log.info("getQuestion({},{})", sequenceNumber, accountId);
         return QuestionMapper.INSTANCE.mapDtoWithoutCorrect(runningTestService.getQuestion(sequenceNumber, accountId));
@@ -48,7 +48,7 @@ public class RunningTestController {
 
     @PostMapping("/passing/finish")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public TestResultDto finishTest(@RequestParam int accountId, Principal account){
+    public TestResultDto finishTest(@RequestParam @Min(1) int accountId, Principal account){
 //      todo Take current account from security.
         log.info("finishTest({})", accountId);
         return TestResultMapper.INSTANCE.toTestResultDto(runningTestService.finish(accountId));

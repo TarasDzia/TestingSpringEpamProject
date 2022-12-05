@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface TestRepository extends JpaRepository<Test, Integer> {
-    @Query("select t from Test t join Subject s on t.subject.id = s.id " +
+    @Query("select t from Test t" +
             " where" +
             " (:subjectId is null or t.subject.id = :subjectId) and " +
             " (:search = '' or t.name like %:search%)")

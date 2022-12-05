@@ -53,10 +53,11 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional
     public Question update(Question question, int questionId) {
-        questionRepository.findById(questionId)
+        Question previousQuestion = questionRepository.findById(questionId)
                 .orElseThrow(() -> new NotFoundException("Question with id %s not exist".formatted(questionId)));
 
         question.setId(questionId);
+        question.setTest(previousQuestion.getTest());
 
         question = questionRepository.save(question);
 

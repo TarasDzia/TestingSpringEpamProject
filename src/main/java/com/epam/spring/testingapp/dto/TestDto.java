@@ -1,5 +1,6 @@
 package com.epam.spring.testingapp.dto;
 
+import com.epam.spring.testingapp.dto.group.OnCreate;
 import com.epam.spring.testingapp.model.enumerate.TestDifficult;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,7 @@ public class TestDto {
     @Null(message = "{null.test.id}")
     private Integer id;
 
-    @Null(message = "{null.test.subjectId}")
+    @Null(groups = {OnCreate.class},message = "{null.test.subjectId}")
     private Integer subjectId;
 
     @NotBlank(message = "{notBlank.test.name}")

@@ -43,9 +43,12 @@ public class TestServiceImpl implements TestService {
     @Override
     @Transactional
     public Test update(Test test, int testId) {
-        testRepository.findById(testId)
+        Test previousTest = testRepository.findById(testId)
                 .orElseThrow(() -> new NotFoundException("Test with id %s not exist".formatted(testId)));
         test.setId(testId);
+
+        if(test.getSubject() == null)
+            test.setSubject(previousTest.getSubject());
 
         test = testRepository.save(test);
         log.info("Updated test#{} to = {}", testId, test);

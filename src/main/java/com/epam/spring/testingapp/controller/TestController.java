@@ -1,6 +1,7 @@
 package com.epam.spring.testingapp.controller;
 
 import com.epam.spring.testingapp.dto.TestDto;
+import com.epam.spring.testingapp.dto.group.OnCreate;
 import com.epam.spring.testingapp.dto.group.OnUpdate;
 import com.epam.spring.testingapp.exception.NotFoundException;
 import com.epam.spring.testingapp.mapper.TestMapper;
@@ -44,7 +45,7 @@ public class TestController {
 
     @PostMapping("/subject/{subjectId}/test")
     @ResponseStatus(HttpStatus.CREATED)
-    public TestDto create(@RequestBody @Valid TestDto testDto, @PathVariable @Min(1) int subjectId) {
+    public TestDto create(@RequestBody @Validated(OnCreate.class) TestDto testDto, @PathVariable @Min(1) int subjectId) {
         log.info("create({})", testDto);
         Test test = TestMapper.INSTANCE.toTest(testDto);
         return TestMapper.INSTANCE.toTestDto(testService.create(test, subjectId));

@@ -31,6 +31,8 @@ public interface TestMapper {
     Test toTest(TestDto testDto);
 
     default Subject mapSubject(int subjectId) {
+        if(subjectId == 0)
+            return null;
         return Subject.builder().id(subjectId).build();
     }
 }

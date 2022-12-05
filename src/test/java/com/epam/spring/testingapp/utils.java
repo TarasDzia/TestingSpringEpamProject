@@ -1,8 +1,10 @@
 package com.epam.spring.testingapp;
 
+import com.epam.spring.testingapp.dto.*;
 import com.epam.spring.testingapp.model.*;
 import com.epam.spring.testingapp.model.enumerate.AccountRole;
 import com.epam.spring.testingapp.model.enumerate.TestDifficult;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -11,6 +13,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class utils {
+    public static final String ANSWER_URL = "/answer";
+    public static final String ACCOUNT_URL = "/account";
+    public static final String TEST_URL = "/test";
+    public static final String TESTRESULT_URL = "/test-result";
+    public static final String SUBJECT_URL = "/subject";
+    public static final String QUESTION_URL = "/question";
+
+
     public static Account getAccount(){
         return Account.builder().id(1)
                 .email("taras@gmail.com").password("pass1231232112")
@@ -20,6 +30,18 @@ public class utils {
                 .build();
     }
 
+    public static AccountDto getAccountDto(){
+        return AccountDto.builder()
+                .email("example228@gmail.com").password("pass1231232112")
+                .firstname("example").surname("example")
+                .birthdate(Date.valueOf(LocalDate.now()))
+                .build();
+    }
+
+    public static SubjectDto getSubjectDto(){
+        return SubjectDto.builder()
+                .name("OOP").build();
+    }
     public static Subject getSubject(){
         return Subject.builder().id(1)
                 .name("OOP").build();
@@ -32,10 +54,28 @@ public class utils {
                 .build();
     }
 
+    public static TestDto getTestDto(Integer subjectId){
+        return TestDto.builder()
+                .name("example_test")
+                .subjectId(subjectId)
+                .duration(50).difficult(TestDifficult.HARD)
+                .build();
+    }
+
+    public static TestDto getTestDto(){
+        return getTestDto(null);
+    }
+
+
     public static Question getQuestion(Test test){
         return Question.builder().id(2)
                 .description("Do u know the way?")
                 .test(test).build();
+    }
+
+    public static QuestionDto getQuestionDto(){
+        return QuestionDto.builder()
+                .description("Do u know the way?").build();
     }
 
     public static Answer getCorrectAnswer(Question question){
@@ -48,6 +88,12 @@ public class utils {
         return Answer.builder().id(4)
                 .description("No").correct(false)
                 .question(question)
+                .build();
+    }
+
+    public static AnswerDto getAnswerDto(){
+        return AnswerDto.builder()
+                .description("Yes").correct(true)
                 .build();
     }
 

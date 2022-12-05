@@ -56,10 +56,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public Account update(Account account, int accountId) {
-        accountRepository.findById(accountId)
-                .orElseThrow(() ->  new NotFoundException("Account with id %s not found".formatted(accountId)));
+        Account previousAccount = accountRepository.findById(accountId)
+                .orElseThrow(() -> new NotFoundException("Account with id %s not found".formatted(accountId)));
 
         account.setId(accountId);
+        account.setPassword(previousAccount.getPassword());
 
         try {
             account = accountRepository.save(account);

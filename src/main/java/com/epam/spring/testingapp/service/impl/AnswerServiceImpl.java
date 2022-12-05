@@ -53,10 +53,11 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     @Transactional
     public Answer update(Answer answer, int answerId) {
-        answerRepository.findById(answerId)
+        Answer previousAnswer = answerRepository.findById(answerId)
                 .orElseThrow(() -> new NotFoundException("Answer with id %s not exist".formatted(answerId)));
 
         answer.setId(answerId);
+        answer.setQuestion(previousAnswer.getQuestion());
 
         answerRepository.save(answer);
         log.info("Updated answer#{} to = {}", answerId, answer);
