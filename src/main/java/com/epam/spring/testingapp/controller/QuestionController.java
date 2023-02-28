@@ -20,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/test")
 @Validated
+@CrossOrigin
 public class QuestionController {
     private final QuestionService questionService;
 

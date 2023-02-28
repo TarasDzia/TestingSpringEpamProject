@@ -1,6 +1,7 @@
 package com.epam.spring.testingapp.service.impl;
 
 import com.epam.spring.testingapp.exception.NotFoundException;
+import com.epam.spring.testingapp.exception.UnprocessableEntityException;
 import com.epam.spring.testingapp.model.Answer;
 import com.epam.spring.testingapp.model.Question;
 import com.epam.spring.testingapp.repository.AnswerRepository;
@@ -8,9 +9,12 @@ import com.epam.spring.testingapp.repository.QuestionRepository;
 import com.epam.spring.testingapp.service.AnswerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Set;
 
 @Slf4j
@@ -59,7 +63,7 @@ public class AnswerServiceImpl implements AnswerService {
         answer.setId(answerId);
         answer.setQuestion(previousAnswer.getQuestion());
 
-        answerRepository.save(answer);
+        answer = answerRepository.save(answer);
         log.info("Updated answer#{} to = {}", answerId, answer);
         return answer;
     }

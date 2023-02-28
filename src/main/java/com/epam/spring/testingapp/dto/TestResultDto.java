@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 public class TestResultDto {
     private int id;
     private int accountId;
-    private TestDto test;
+    private TestDtoSubject test;
     private int score;
 
     @JsonFormat(pattern="dd.MM.yyyy HH:mm:ss")

@@ -20,12 +20,12 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TestDto {
+public class TestDtoSubject {
     @Null(message = "{null.test.id}")
     private Integer id;
 
     @Null(groups = {OnCreate.class},message = "{null.test.subjectId}")
-    private Integer subjectId;
+    private SubjectDto subject;
 
     @NotBlank(message = "{notBlank.test.name}")
     @Pattern(message = "{pattern.test.name}", regexp = "^[`'\\s\\wА-ї]{2,}$")
@@ -37,5 +37,8 @@ public class TestDto {
 
     @NotNull(message = "{notNull.test.difficult}")
     private TestDifficult difficult;
-    private List<QuestionDto> questions;
+
+    // TODO: 20.02.2023 message translate
+    @Null(groups = {OnCreate.class},message = "Should be null")
+    private Integer questionsQuantity;
 }

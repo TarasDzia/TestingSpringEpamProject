@@ -4,13 +4,11 @@ import com.epam.spring.testingapp.dto.*;
 import com.epam.spring.testingapp.model.*;
 import com.epam.spring.testingapp.model.enumerate.AccountRole;
 import com.epam.spring.testingapp.model.enumerate.TestDifficult;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class utils {
     public static final String ANSWER_URL = "/answer";
@@ -54,15 +52,15 @@ public class utils {
                 .build();
     }
 
-    public static TestDto getTestDto(Integer subjectId){
-        return TestDto.builder()
+    public static TestDtoSubject getTestDto(Integer subjectId){
+        return TestDtoSubject.builder()
                 .name("example_test")
-                .subjectId(subjectId)
+                .subject(SubjectDto.builder().id(subjectId).build())
                 .duration(50).difficult(TestDifficult.HARD)
                 .build();
     }
 
-    public static TestDto getTestDto(){
+    public static TestDtoSubject getTestDto(){
         return getTestDto(null);
     }
 

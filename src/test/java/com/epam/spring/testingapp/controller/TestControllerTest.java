@@ -1,11 +1,6 @@
 package com.epam.spring.testingapp.controller;
 
-import com.epam.spring.testingapp.dto.QuestionDto;
-import com.epam.spring.testingapp.dto.TestDto;
-import com.epam.spring.testingapp.model.Subject;
-import com.epam.spring.testingapp.service.TestResultService;
-import com.epam.spring.testingapp.service.impl.AccountServiceImpl;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.epam.spring.testingapp.dto.TestDtoSubject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,12 +81,12 @@ class TestControllerTest {
             @Sql(value = "classpath:init/test-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
     })
     void create_GivenValidInput_ShouldReturn201() throws Exception {
-        TestDto testDto = getTestDto();
+        TestDtoSubject testDtoSubject = getTestDto();
 
         int subjectId = 1;
         mockMvc.perform(post(SUBJECT_URL+"/{subjectId}"+TEST_URL, subjectId)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(testDto)))
+                        .content(objectMapper.writeValueAsString(testDtoSubject)))
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.id").isNumber())
@@ -105,12 +100,12 @@ class TestControllerTest {
             @Sql(value = "classpath:init/test-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
     })
     void create_GivenNegativeId_ShouldReturn400() throws Exception {
-        TestDto testDto = getTestDto();
+        TestDtoSubject testDtoSubject = getTestDto();
 
         int subjectId = -1;
         mockMvc.perform(post(SUBJECT_URL+"/{subjectId}"+TEST_URL, subjectId)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(testDto)))
+                        .content(objectMapper.writeValueAsString(testDtoSubject)))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
@@ -121,12 +116,12 @@ class TestControllerTest {
             @Sql(value = "classpath:init/test-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
     })
     void create_GivenNotExistingSubjectId_ShouldReturn404() throws Exception {
-        TestDto testDto = getTestDto();
+        TestDtoSubject testDtoSubject = getTestDto();
 
         int subjectId = 213123;
         mockMvc.perform(post(SUBJECT_URL+"/{subjectId}"+TEST_URL, subjectId)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(testDto)))
+                        .content(objectMapper.writeValueAsString(testDtoSubject)))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -137,12 +132,12 @@ class TestControllerTest {
             @Sql(value = "classpath:init/test-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
     })
     void create_NotGivenName_ShouldReturn400() throws Exception {
-        TestDto testDto = getTestDto();
-        testDto.setName(null);
+        TestDtoSubject testDtoSubject = getTestDto();
+        testDtoSubject.setName(null);
         int subjectId = 1;
         mockMvc.perform(post(SUBJECT_URL+"/{subjectId}"+TEST_URL, subjectId)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(testDto)))
+                        .content(objectMapper.writeValueAsString(testDtoSubject)))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
@@ -153,12 +148,12 @@ class TestControllerTest {
             @Sql(value = "classpath:init/test-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
     })
     void update_GivenValidInput_ShouldReturn200() throws Exception {
-        TestDto testDto = getTestDto();
+        TestDtoSubject testDtoSubject = getTestDto();
         int testId = 1;
 
         mockMvc.perform(put(TEST_URL + "/{testId}", testId)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(testDto)))
+                        .content(objectMapper.writeValueAsString(testDtoSubject)))
                 .andDo(print())
                 .andExpect(jsonPath("$.id").value(testId))
                 .andExpect(jsonPath("$.subjectId").isNumber())
@@ -172,12 +167,12 @@ class TestControllerTest {
     })
     void update_GivenSubjectId_ShouldReturn200() throws Exception {
         int newSubjectId = 2;
-        TestDto testDto = getTestDto(newSubjectId);
+        TestDtoSubject testDtoSubject = getTestDto(newSubjectId);
         int testId = 1;
 
         mockMvc.perform(put(TEST_URL + "/{testId}", testId)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(testDto)))
+                        .content(objectMapper.writeValueAsString(testDtoSubject)))
                 .andDo(print())
                 .andExpect(jsonPath("$.id").value(testId))
                 .andExpect(jsonPath("$.subjectId").value(newSubjectId))
@@ -190,12 +185,12 @@ class TestControllerTest {
             @Sql(value = "classpath:init/test-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
     })
     void update_GivenNegativeId_ShouldReturn400() throws Exception {
-        TestDto testDto = getTestDto();
+        TestDtoSubject testDtoSubject = getTestDto();
         int testId = -1;
 
         mockMvc.perform(put(TEST_URL + "/{testId}", testId)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(testDto)))
+                        .content(objectMapper.writeValueAsString(testDtoSubject)))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
@@ -206,12 +201,12 @@ class TestControllerTest {
             @Sql(value = "classpath:init/test-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
     })
     void update_GivenNotExistingTestId_ShouldReturn404() throws Exception {
-        TestDto testDto = getTestDto();
+        TestDtoSubject testDtoSubject = getTestDto();
         int testId = 1231;
 
         mockMvc.perform(put(TEST_URL + "/{testId}", testId)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(testDto)))
+                        .content(objectMapper.writeValueAsString(testDtoSubject)))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -222,13 +217,13 @@ class TestControllerTest {
             @Sql(value = "classpath:init/test-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
     })
     void update_GivenTooLongDuration_ShouldReturn400() throws Exception {
-        TestDto testDto = getTestDto();
-        testDto.setDuration(123213);
+        TestDtoSubject testDtoSubject = getTestDto();
+        testDtoSubject.setDuration(123213);
         int testId = 1;
 
         mockMvc.perform(put(TEST_URL + "/{testId}", testId)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(testDto)))
+                        .content(objectMapper.writeValueAsString(testDtoSubject)))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }

@@ -15,7 +15,7 @@ import java.util.Set;
     @AllArgsConstructor
     @Builder
     @Entity
-@Table(name = "answers")
+@Table(name = "answers", indexes = {@Index(name = "idx_answer_in_question_unique", columnList = "question_id, description", unique = true)})
 public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

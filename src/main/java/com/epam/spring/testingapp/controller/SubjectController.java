@@ -23,6 +23,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @RequestMapping("/subject")
 @Validated
+@CrossOrigin
 public class SubjectController {
     private final SubjectService subjectService;
 
