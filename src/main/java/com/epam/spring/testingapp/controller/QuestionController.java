@@ -7,6 +7,7 @@ import com.epam.spring.testingapp.model.Question;
 import com.epam.spring.testingapp.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,9 +26,9 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @GetMapping("{testId}/question")
-    public List<QuestionDto> findAll(@PathVariable @Min(1) int testId) {
+    public List<QuestionDto> findAll(@PathVariable @Min(1) int testId, Pageable pageable) {
         log.info("findAll({})", testId);
-        return QuestionMapper.INSTANCE.mapQuestionsDtos(questionService.findAll(testId));
+        return QuestionMapper.INSTANCE.mapQuestionsDtos(questionService.findAll(testId, pageable));
     }
 
     @GetMapping("/question/{questionId}")

@@ -10,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,22 +37,28 @@ class QuestionServiceImplTest {
     private Question expectedQuestion;
     private List<Question> expectedQuestions;
 
+    @Mock
+    private Page<Question> pageMock;
+
     @BeforeEach
     void setUp() {
         test = getTest();
         expectedQuestion = getQuestion(test);
-        expectedQuestions = List.of(expectedQuestion, getQuestion(test));
+        expectedQuestions =  List.of(expectedQuestion, getQuestion(test));
     }
 
     @org.junit.jupiter.api.Test
      void findAll_GivenTestId_ShouldReturnQuestionsList() {
-        when(questionRepositoryMock.findAllByTestId(any())).thenReturn(expectedQuestions);
+        when(pageMock.getContent()).thenReturn(expectedQuestions);
+        when(questionRepositoryMock.findAllByTestId(any(), any())).thenReturn(pageMock);
 
         int testId = expectedQuestion.getTest().getId();
-        List<Question> actual = questionService.findAll(testId);
+        Pageable pageable = Pageable.unpaged();
+
+        List<Question> actual = questionService.findAll(testId, pageable);
 
         assertThat(actual).isEqualTo(expectedQuestions);
-        verify(questionRepositoryMock, times(1)).findAllByTestId(testId);
+        verify(questionRepositoryMock, times(1)).findAllByTestId(testId, pageable);
     }
 
     @org.junit.jupiter.api.Test

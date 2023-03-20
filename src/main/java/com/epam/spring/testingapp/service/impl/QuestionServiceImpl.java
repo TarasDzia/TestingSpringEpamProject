@@ -1,7 +1,6 @@
 package com.epam.spring.testingapp.service.impl;
 
 import com.epam.spring.testingapp.exception.NotFoundException;
-import com.epam.spring.testingapp.mapper.QuestionMapper;
 import com.epam.spring.testingapp.model.Question;
 import com.epam.spring.testingapp.model.Test;
 import com.epam.spring.testingapp.repository.QuestionRepository;
@@ -9,6 +8,7 @@ import com.epam.spring.testingapp.repository.TestRepository;
 import com.epam.spring.testingapp.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,8 +22,10 @@ public class QuestionServiceImpl implements QuestionService {
     public final TestRepository testRepository;
 
     @Override
-    public List<Question> findAll(int testId) {
-        List<Question> questions = questionRepository.findAllByTestId(testId);
+    public List<Question> findAll(int testId, Pageable pageable) {
+        // TODO: 06.03.2023 change list to page
+        pageable= Pageable.unpaged();
+        List<Question> questions = questionRepository.findAllByTestId(testId, pageable).toList();
         log.info("Founded questions = {}", questions);
         return questions;
     }

@@ -1,14 +1,14 @@
 package com.epam.spring.testingapp.controller;
 
-import com.epam.spring.testingapp.dto.QuestionDto;
 import com.epam.spring.testingapp.dto.SubjectDto;
 import com.epam.spring.testingapp.dto.group.OnUpdate;
-import com.epam.spring.testingapp.exception.NotFoundException;
 import com.epam.spring.testingapp.mapper.SubjectMapper;
 import com.epam.spring.testingapp.model.Subject;
 import com.epam.spring.testingapp.service.SubjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -27,10 +26,16 @@ import java.util.Objects;
 public class SubjectController {
     private final SubjectService subjectService;
 
-    @GetMapping
+    @GetMapping("/all")
     public List<SubjectDto> findAll() {
         log.info("findAll()");
         return SubjectMapper.INSTANCE.toSubjectsDtos(subjectService.findAll());
+    }
+
+    @GetMapping
+    public Page<SubjectDto> findAll(@RequestParam(required = false) String search, Pageable pageable) {
+        log.info("pageable findAll({}, {})", search, pageable);
+        return SubjectMapper.INSTANCE.toSubjectsDto(subjectService.findAll(search, pageable));
     }
 
     @PostMapping

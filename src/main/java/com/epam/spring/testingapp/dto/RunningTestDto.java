@@ -1,10 +1,8 @@
 package com.epam.spring.testingapp.dto;
 
+import com.epam.spring.testingapp.model.RunningTest;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.Set;
@@ -20,6 +18,9 @@ public class RunningTestDto {
     private Integer accountId;
     private Set<AnswerDto> userAnswers;
     private Integer testResultId;
-    @JsonFormat(pattern="dd.MM.yyyy HH:mm:ss")
     private Timestamp startTime;
+    private Timestamp endTime;
+    public Timestamp getEndTime() {
+        return Timestamp.valueOf(this.getStartTime().toLocalDateTime().plusMinutes(this.getTest().getDuration()));
+    }
 }

@@ -25,7 +25,6 @@ public class TestController {
     private final TestService testService;
 
     @GetMapping("/test")
-    @CrossOrigin
     public List<TestDtoSubject> findAll(@RequestParam(required = false) String search, @RequestParam(required = false) Integer subjectId,
                                         Pageable pageable) {
         log.info("findAll({}, {}, {})", search,  subjectId, pageable);

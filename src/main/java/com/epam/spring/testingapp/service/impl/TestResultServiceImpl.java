@@ -5,6 +5,8 @@ import com.epam.spring.testingapp.repository.TestResultRepository;
 import com.epam.spring.testingapp.service.TestResultService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,8 +24,8 @@ public class TestResultServiceImpl implements TestResultService {
     private final TestResultRepository testResultRepository;
 
     @Override
-    public List<TestResult> findAllByAccount(int accountId) {
-        List<TestResult> testResults = testResultRepository.findByAccount_Id(accountId);
+    public Page<TestResult> findAllByAccount(int accountId, Pageable pageable) {
+        Page<TestResult> testResults = testResultRepository.findByAccount_Id(accountId, pageable);
 
         log.info("Founded testResults of account#{} = {}", accountId, testResults);
         return testResults;

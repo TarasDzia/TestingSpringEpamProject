@@ -2,14 +2,14 @@ package com.epam.spring.testingapp.service.impl;
 
 import com.epam.spring.testingapp.exception.*;
 import com.epam.spring.testingapp.model.*;
-import com.epam.spring.testingapp.repository.AccountRepository;
-import com.epam.spring.testingapp.repository.AnswerRepository;
-import com.epam.spring.testingapp.repository.RunningTestRepository;
-import com.epam.spring.testingapp.repository.TestRepository;
+import com.epam.spring.testingapp.repository.*;
 import com.epam.spring.testingapp.service.RunningTestService;
 import com.epam.spring.testingapp.service.TestResultService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -27,6 +27,8 @@ public class RunningTestServiceImpl implements RunningTestService {
     private final AccountRepository accountRepository;
     private final RunningTestRepository runningTestRepository;
     private final AnswerRepository answerRepository;
+
+    private final QuestionRepository questionRepository;
     private final TestResultService testResultService;
 
     @Override
@@ -95,22 +97,22 @@ public class RunningTestServiceImpl implements RunningTestService {
         return runningTest;
     }
 
-    public Question getQuestion(Integer sequenceNumber, Integer accountId) {
+    @Override
+    public Page<Question> getQuestion(Pageable pageable, Integer accountId) {
         log.debug("Start getting question from running test by sequence number...");
         RunningTest runningTest = runningTestRepository.findFirstByAccount_IdAndTestResultNull(accountId).orElseThrow(() ->
                 new NoTestRunningForAccountException("Currently for account with id %s no test is running".formatted(accountId)));
+//        Question question;
+//        try{
+//            question = runningTest.getTest().getQuestions().get(pageable);
+//        }catch (IndexOutOfBoundsException e){
+//            log.debug("Sequence number is out of bounds!", e);
+//            throw new SequenceNumberOutOfBoundsException("There are no questions for sequenceNumber = %s "
+//                    .formatted(pageable));
+//        }
 
-        Question question;
-        try{
-            question = runningTest.getTest().getQuestions().get(sequenceNumber);
-        }catch (IndexOutOfBoundsException e){
-            log.debug("Sequence number is out of bounds!", e);
-            throw new SequenceNumberOutOfBoundsException("There are no questions for sequenceNumber = %s "
-                    .formatted(sequenceNumber));
-        }
-
-        log.info("Founded question of sequence number({}) = {}", sequenceNumber, question);
-        return question;
+//        log.info("Founded question of sequence number({}) = {}", pageable, question);
+        return questionRepository.findAllByTestId(runningTest.getTest().getId(), pageable);
     }
 
     @Override
@@ -133,6 +135,15 @@ public class RunningTestServiceImpl implements RunningTestService {
 
         log.info("Test#{}#{} passed with result = {}", currentTest.getId(), currentTest.getName(), testResult);
         return testResult;
+    }
+
+    @Override
+    public RunningTest findCurrent(int accountId) {
+        log.debug("Start getting running test by accountId...");
+        RunningTest runningTest = runningTestRepository.findFirstByAccount_IdAndTestResultNull(accountId).orElseThrow(() ->
+                new NoTestRunningForAccountException("Currently for account with id %s no test is running".formatted(accountId)));
+
+        return runningTest;
     }
 
     private void finishAllRunningTestForAccount(int accountId) {

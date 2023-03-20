@@ -16,4 +16,5 @@ public interface RunningTestRepository extends JpaRepository<RunningTest, Intege
     List<RunningTest> findAllNotFinished(Integer accountId);
 
     Optional<RunningTest> findFirstByAccount_IdAndTestResultNull(int accountId);
+
 }

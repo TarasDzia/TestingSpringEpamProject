@@ -1,11 +1,14 @@
 package com.epam.spring.testingapp.mapper;
 
+import com.epam.spring.testingapp.dto.SubjectDto;
 import com.epam.spring.testingapp.dto.TestResultDto;
 import com.epam.spring.testingapp.model.Account;
+import com.epam.spring.testingapp.model.Subject;
 import com.epam.spring.testingapp.model.TestResult;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -13,7 +16,10 @@ import java.util.List;
 public interface TestResultMapper {
     TestResultMapper INSTANCE = Mappers.getMapper(TestResultMapper.class);
 
-    List<TestResultDto> toTestResultsDtos(List<TestResult> testResults);
+    default Page<TestResultDto> toTestResultsDtos(Page<TestResult> page) {
+        return page.map(this::toTestResultDto);
+    }
+
     List<TestResult> toTestResults(List<TestResultDto> testResultDtos);
 
     @Mapping(target = "accountId", source = "account.id")

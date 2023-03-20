@@ -29,5 +29,8 @@ public class QuestionDto {
     @NotBlank(message = "{notBlank.question.description}")
     private String description;
 
+    @Null
+    private Boolean multipleAnswers;
+
     private Set<AnswerDto> answers;
 }

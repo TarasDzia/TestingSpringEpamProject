@@ -9,10 +9,13 @@ import com.epam.spring.testingapp.service.SubjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -22,6 +25,14 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public List<Subject> findAll() {
         List<Subject> subjects = subjectRepository.findAll();
+        log.info("Founded subjects = {}", subjects);
+        return subjects;
+    }
+
+    @Override
+    public Page<Subject> findAll(String search, Pageable pageable) {
+        search  = Objects.isNull(search)? "" : search;
+        Page<Subject> subjects = subjectRepository.findAll(search, pageable);
         log.info("Founded subjects = {}", subjects);
         return subjects;
     }
