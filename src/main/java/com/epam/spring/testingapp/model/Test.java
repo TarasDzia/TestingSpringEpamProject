@@ -33,6 +33,9 @@ public class Test {
     @Column(nullable = false)
     private TestDifficult difficult;
 
+    @Transient
+    private int popularity;
+
 
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "test", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

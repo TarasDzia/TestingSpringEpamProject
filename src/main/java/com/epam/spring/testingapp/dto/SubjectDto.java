@@ -20,6 +20,6 @@ public class SubjectDto {
     private Integer id;
 
     @NotBlank(message = "{notBlank.subject.name}")
-    @Pattern(message = "Invalid subject name format", regexp = "^[`'\\s\\wА-ї]{2,}$")
+    @Pattern(message = "Invalid subject name format", regexp = "^[`'\\s\\wІ-ї]{2,}$")
     private String name;
 }

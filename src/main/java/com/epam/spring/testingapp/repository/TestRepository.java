@@ -15,4 +15,9 @@ public interface TestRepository extends JpaRepository<Test, Integer> {
             " (:subjectId is null or t.subject.id = :subjectId) and " +
             " (:search = '' or t.name like %:search%)")
     List<Test> findAllBySubjectId(String search, Integer subjectId, Pageable pageable);
+
+    @Query("select COUNT(t) from TestResult tr join RunningTest rt on tr.runningTest = rt inner join Test t on rt.test = t" +
+                  " where" +
+                  " t.id = :testId")
+    int countTestResultByTestId(int testId);
 }

@@ -6,6 +6,8 @@ import javax.validation.ConstraintValidatorContext;
 public class NameValidator implements ConstraintValidator<NameConstraint, String> {
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return value.matches("^[А-їA-z`']{2,}$");
+        if(value == null)
+            return true;
+        return value.matches("^[І-їA-z`'\\s]{2,}$");
     }
 }

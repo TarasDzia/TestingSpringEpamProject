@@ -32,14 +32,17 @@ public class RunningTestServiceImpl implements RunningTestService {
     private final TestResultService testResultService;
 
     @Override
+    @Transactional
     public RunningTest start(int testId, int accountId) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new NotFoundException("Account with id %s not exist".formatted(accountId)));
-//      Finish other test that can running for this account
-        finishAllRunningTestForAccount(accountId);
-
         Test test = testRepository.findById(testId)
                 .orElseThrow(() -> new NotFoundException("Test with id %s not exist".formatted(testId)));
+        if (test.getQuestions().size() == 0)
+            throw new NotFoundException("There is no questions to start %s#%s test".formatted(testId, test.getName()));
+
+//      Finish other test that can running for this account
+        finishAllRunningTestForAccount(accountId);
 
         log.debug("Creating running test instance...");
         RunningTest runningTest = RunningTest.builder()
@@ -53,6 +56,7 @@ public class RunningTestServiceImpl implements RunningTestService {
     }
 
     @Override
+    @Transactional
     public RunningTest addUserAnswer(Set<Integer> answersIds, int accountId) {
         RunningTest runningTest = runningTestRepository.findFirstByAccount_IdAndTestResultNull(accountId).orElseThrow(() ->
                 new NoTestRunningForAccountException("Currently for account with id %s no test is running".formatted(accountId)));
@@ -116,6 +120,7 @@ public class RunningTestServiceImpl implements RunningTestService {
     }
 
     @Override
+    @Transactional
     public TestResult finish(int accountId) {
         log.info("Finishing current test for account#{}...", accountId);
         Account account = accountRepository.findById(accountId)

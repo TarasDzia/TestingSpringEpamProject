@@ -5,6 +5,7 @@ import com.epam.spring.testingapp.dto.group.OnUpdate;
 import com.epam.spring.testingapp.model.enumerate.AccountRole;
 import com.epam.spring.testingapp.validator.NameConstraint;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,13 +18,14 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-//@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AccountDto {
     @Null(message = "{null.account.id}")
     private Integer id;
 
     @Email(message = "{email.account.email}")
     @NotBlank(groups = OnCreate.class, message = "{notBlank.account.email}")
+    @Null(groups = OnUpdate.class, message = "{null.account.email}")
     private String email;
 
     @Pattern(message = "{pattern.account.password}", regexp = "^\\w{8,}$")
@@ -40,7 +42,7 @@ public class AccountDto {
     @NameConstraint(message = "{nameConstraint.account.surname}")
     private String surname;
 
-    @JsonFormat(pattern="dd.MM.yyyy")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date birthdate;
 
     @Null(groups = OnCreate.class, message = "{null.account.banned}")

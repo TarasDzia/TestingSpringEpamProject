@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -33,16 +34,17 @@ class AccountServiceImplTest {
     private Account expectedAccount;
     private List<Account> expectedAccounts;
 
-
+    private Page<Account> pageMock;
     @BeforeEach
     void setUp() {
         expectedAccount = getAccount();
         expectedAccounts = List.of(expectedAccount, getAccount());
+        when(pageMock.getContent()).thenReturn(expectedAccounts);
     }
 
     @Test
     void findAll_ShouldReturnArrayOfAccounts() {
-        when(accountRepository.findAllByAccountRole(any(), any(), any())).thenReturn(expectedAccounts);
+        when(accountRepository.findAllByAccountRole(any(), any(), any())).thenReturn(pageMock);
 
         String search = "test";
         AccountRole role = AccountRole.USER;

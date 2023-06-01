@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
@@ -28,12 +29,15 @@ public class TestDto {
     private Integer subjectId;
 
     @NotBlank(message = "{notBlank.test.name}")
-    @Pattern(message = "{pattern.test.name}", regexp = "^[`'\\s\\wА-ї]{2,}$")
+    @Length(message = "{pattern.test.name}")
     private String name;
 
     @NotNull
     @Range(min = 5, max = 180, message = "{range.test.duration}")
     private Integer duration;
+
+    @Null
+    private int popularity;
 
     @NotNull(message = "{notNull.test.difficult}")
     private TestDifficult difficult;

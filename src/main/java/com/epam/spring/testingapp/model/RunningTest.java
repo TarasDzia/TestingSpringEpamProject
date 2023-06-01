@@ -19,8 +19,8 @@ public class RunningTest {
     @EqualsAndHashCode.Exclude
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "test_id", nullable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "test_id", nullable = true, updatable = true)
     private Test test;
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false, updatable = false)

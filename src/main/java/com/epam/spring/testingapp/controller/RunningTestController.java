@@ -34,6 +34,7 @@ public class RunningTestController {
         log.info("startTest(testId={},accountId={})", testId, accountId);
         return RunningTestMapper.INSTANCE.toRunningTestDto(runningTestService.start(testId, accountId));
     }
+
     @GetMapping("/passing")
     public RunningTestDto findRunningTest(@RequestParam @Min(1) int accountId, Principal account){
         //      todo Take current account from security.

@@ -25,7 +25,7 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public List<Test> findAll(String search, Integer subjectId, Pageable pageable) {
-        search  = Objects.isNull(search)? "" : search;
+        search = Objects.isNull(search) ? "" : search;
         List<Test> tests = testRepository.findAllBySubjectId(search, subjectId, pageable);
         log.info("Founded tests = {}", tests);
         return tests;
@@ -35,6 +35,8 @@ public class TestServiceImpl implements TestService {
     public Test find(int testId) {
         Test test = testRepository.findById(testId)
                 .orElseThrow(() -> new NotFoundException("Test with id %s not exist".formatted(testId)));
+
+        test.setPopularity(testRepository.countTestResultByTestId(testId));
 
         log.info("Founded test = {}", test);
         return test;
@@ -47,7 +49,7 @@ public class TestServiceImpl implements TestService {
                 .orElseThrow(() -> new NotFoundException("Test with id %s not exist".formatted(testId)));
         test.setId(testId);
 
-        if(test.getSubject() == null)
+        if (test.getSubject() == null)
             test.setSubject(previousTest.getSubject());
 
         test = testRepository.save(test);

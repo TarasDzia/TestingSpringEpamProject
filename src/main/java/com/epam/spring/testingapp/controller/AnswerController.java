@@ -2,9 +2,7 @@ package com.epam.spring.testingapp.controller;
 
 import com.epam.spring.testingapp.dto.AnswerDto;
 import com.epam.spring.testingapp.dto.group.OnUpdate;
-import com.epam.spring.testingapp.exception.NotFoundException;
 import com.epam.spring.testingapp.exception.UnprocessableEntityException;
-import com.epam.spring.testingapp.mapper.AccountMapper;
 import com.epam.spring.testingapp.mapper.AnswerMapper;
 import com.epam.spring.testingapp.model.Answer;
 import com.epam.spring.testingapp.service.AnswerService;
@@ -17,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 @Slf4j
