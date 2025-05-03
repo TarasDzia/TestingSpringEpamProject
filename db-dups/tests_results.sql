@@ -1,0 +1,1 @@
+UPDATE testing.tests SET  subject_id = 1, name='Екзамен із Основ Програмування' WHERE id = 1;

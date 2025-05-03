@@ -2,7 +2,6 @@ package com.epam.spring.testingapp.service.impl;
 
 import com.epam.spring.testingapp.exception.*;
 import com.epam.spring.testingapp.model.*;
-import com.epam.spring.testingapp.model.enumerate.TestDifficult;
 import com.epam.spring.testingapp.repository.AccountRepository;
 import com.epam.spring.testingapp.repository.AnswerRepository;
 import com.epam.spring.testingapp.repository.RunningTestRepository;
@@ -15,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Pageable;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -23,9 +23,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import static com.epam.spring.testingapp.utils.*;
-import static org.assertj.core.api.AssertionsForClassTypes.anyOf;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -63,8 +62,8 @@ class RunningTestServiceImplTest {
         question = getQuestion(test);
         answer1 = getCorrectAnswer(question);
         answer2 = getBadAnswer(question);
-        expectedEmptyRunningTest = getRunningTest(account,test);
-        expectedRunningTest = getRunningTest(account,test);
+        expectedEmptyRunningTest = getRunningTest(account, test);
+        expectedRunningTest = getRunningTest(account, test);
         expectedTestResult = getTestResult(account);
 
         answerSet = Set.of(answer1, answer2);
@@ -85,7 +84,7 @@ class RunningTestServiceImplTest {
         when(accountRepositoryMock.findById(anyInt())).thenReturn(Optional.ofNullable(account));
         when(runningTestRepositoryMock.save(any())).thenReturn(expectedEmptyRunningTest);
 
-        try(MockedStatic<Timestamp> timestampMock = mockStatic(Timestamp.class)){
+        try (MockedStatic<Timestamp> timestampMock = mockStatic(Timestamp.class)) {
             timestampMock.when(() -> Timestamp.valueOf(any(LocalDateTime.class))).thenReturn(currentTime);
 
             RunningTest actual = runningTestService.start(testId, accountId);
@@ -219,7 +218,7 @@ class RunningTestServiceImplTest {
         Set<Integer> answersIds = Set.of(2, 4);
         int accountId = account.getId();
 
-        expectedEmptyRunningTest.setStartTime(Timestamp.valueOf(LocalDateTime.now().minusMinutes(test.getDuration()+1)));
+        expectedEmptyRunningTest.setStartTime(Timestamp.valueOf(LocalDateTime.now().minusMinutes(test.getDuration() + 1)));
 
         when(runningTestRepositoryMock.findFirstByAccount_IdAndTestResultNull(anyInt())).thenReturn(Optional.ofNullable(expectedEmptyRunningTest));
 
@@ -237,7 +236,7 @@ class RunningTestServiceImplTest {
 
         when(runningTestRepositoryMock.findFirstByAccount_IdAndTestResultNull(anyInt())).thenReturn(Optional.ofNullable(expectedEmptyRunningTest));
 
-        Question actual = runningTestService.getQuestion(sequenceNumber, accountId);
+        Question actual = runningTestService.getQuestion(Pageable.unpaged(), accountId).getContent().iterator().next();
 
         assertThat(actual).isEqualTo(question);
         assertThat(actual.getId()).isEqualTo(question.getId());
@@ -252,7 +251,8 @@ class RunningTestServiceImplTest {
         when(runningTestRepositoryMock.findFirstByAccount_IdAndTestResultNull(anyInt())).thenReturn(Optional.empty());
 
         assertThrows(NoTestRunningForAccountException.class, () -> {
-            runningTestService.getQuestion(sequenceNumber, accountId);
+            runningTestService.getQuestion(Pageable.unpaged(), accountId);
+
         });
 
         verify(runningTestRepositoryMock, times(1)).findFirstByAccount_IdAndTestResultNull(accountId);
@@ -266,7 +266,8 @@ class RunningTestServiceImplTest {
         when(runningTestRepositoryMock.findFirstByAccount_IdAndTestResultNull(anyInt())).thenReturn(Optional.ofNullable(expectedEmptyRunningTest));
 
         assertThrows(SequenceNumberOutOfBoundsException.class, () -> {
-            runningTestService.getQuestion(sequenceNumber, accountId);
+            runningTestService.getQuestion(Pageable.unpaged(), accountId).getContent().iterator().next();
+
         });
 
         verify(runningTestRepositoryMock, times(1)).findFirstByAccount_IdAndTestResultNull(accountId);

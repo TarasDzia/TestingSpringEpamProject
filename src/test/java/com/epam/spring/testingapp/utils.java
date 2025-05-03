@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 public class utils {
     public static final String ANSWER_URL = "/answer";
     public static final String ACCOUNT_URL = "/account";
+    public static final String AUTH_URL = "/auth/account";
     public static final String TEST_URL = "/test";
     public static final String TESTRESULT_URL = "/test-result";
     public static final String SUBJECT_URL = "/subject";
@@ -25,6 +26,7 @@ public class utils {
                 .firstname("Тарас").surname("Дзядик")
                 .accountRole(AccountRole.USER)
                 .birthdate(Date.valueOf(LocalDate.now()))
+                .banned(false)
                 .build();
     }
 

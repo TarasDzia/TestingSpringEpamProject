@@ -1,0 +1,14 @@
+INSERT INTO testing.accounts (id, account_role, banned, birthdate, email, firstname, password, surname) VALUES (1, 0, false, '2001-05-28', 'taras28@gmail.com', 'Тарас', 'pass1231232112', 'Дзядик');
+INSERT INTO testing.accounts (id, account_role, banned, birthdate, email, firstname, password, surname) VALUES (2, 0, false, '2001-05-28', 'taras28@ukr.net', 'Тарас', 'pass1231232112', 'Дзядик');
+INSERT INTO testing.subjects (id, name) VALUES (4, 'Англійська мова');
+INSERT INTO testing.subjects (id, name) VALUES (3, 'Математика');
+INSERT INTO testing.subjects (id, name) VALUES (1, 'Українська мова');
+INSERT INTO testing.tests (id, difficult, duration, name, subject_id) VALUES (2, 1, 15, 'Woow_test', 3);
+INSERT INTO testing.tests (id, difficult, duration, name, subject_id) VALUES (3, 1, 15, 'Woow_test123123', 3);
+INSERT INTO testing.tests (id, difficult, duration, name, subject_id) VALUES (4, 1, 100, 'Woow_test123123', 3);
+INSERT INTO testing.tests (id, difficult, duration, name, subject_id) VALUES (5, 3, 100, 'test_123', 3);
+INSERT INTO testing.tests (id, difficult, duration, name, subject_id) VALUES (6, 3, 14, 'test2222', 3);
+INSERT INTO testing.tests (id, difficult, duration, name, subject_id) VALUES (7, 3, 64, 'essfd', 3);
+INSERT INTO testing.questions (id, description, test_id) VALUES (6, 'Do u know the way?', 2);
+INSERT INTO testing.answers (id, correct, description, question_id) VALUES (7, true, 'Yes', 6);
+INSERT INTO testing.answers (id, correct, description, question_id) VALUES (8, false, 'No', 6);

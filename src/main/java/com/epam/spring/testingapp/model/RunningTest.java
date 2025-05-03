@@ -7,6 +7,9 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
 
+import static javax.persistence.ConstraintMode.NO_CONSTRAINT;
+import static javax.persistence.ConstraintMode.PROVIDER_DEFAULT;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,7 +32,8 @@ public class RunningTest {
     @JoinTable(
             name = "runningTest_answer",
             joinColumns = @JoinColumn(name = "runningTest_id"),
-            inverseJoinColumns = @JoinColumn(name = "answer_id")
+            inverseJoinColumns = @JoinColumn(name = "answer_id",
+            foreignKey = @ForeignKey(NO_CONSTRAINT), nullable = false)
     )
     private Set<Answer> userAnswers;
     @OneToOne

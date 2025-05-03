@@ -8,6 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -37,6 +39,9 @@ class TestResultServiceImplTest {
     private Set<Answer> answers;
     private List<Question> questions;
 
+    @Mock
+    private Page<TestResult> pageMock;
+
     @BeforeEach
     void setUp() {
         Account account = getAccount();
@@ -57,17 +62,19 @@ class TestResultServiceImplTest {
         runningTest.setUserAnswers(answers);
         runningTest.setTestResult(expectedTestResult);
         expectedTestResult.setRunningTest(runningTest);
+
     }
 
     @org.junit.jupiter.api.Test
     void findAllByAccount_GivenAccountId_ShouldReturnListOfTestResult() {
-        when(testResultRepository.findByAccount_Id(anyInt())).thenReturn(expectedTestResults);
+        when(pageMock.getContent()).thenReturn(expectedTestResults);
+        when(testResultRepository.findByAccount_Id(anyInt(), any())).thenReturn(pageMock);
 
         int accountId = expectedTestResult.getAccount().getId();
-        List<TestResult> actual = testResultService.findAllByAccount(accountId);
+        List<TestResult> actual = testResultService.findAllByAccount(accountId, Pageable.unpaged()).getContent();
 
         assertThat(actual).isEqualTo(expectedTestResults);
-        verify(testResultRepository, times(1)).findByAccount_Id(accountId);
+        verify(testResultRepository, times(1)).findByAccount_Id(accountId, Pageable.unpaged());
     }
 
     @org.junit.jupiter.api.Test

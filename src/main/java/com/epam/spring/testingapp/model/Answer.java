@@ -27,12 +27,6 @@ public class Answer {
     @ToString.Exclude
     private Question question;
 
-    @ManyToMany(mappedBy = "userAnswers")
-    @JsonIgnore
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private Set<RunningTest> runningTests;
-
     @Column(nullable = false)
     private String description;
 

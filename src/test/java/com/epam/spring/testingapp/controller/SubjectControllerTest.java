@@ -41,8 +41,8 @@ class SubjectControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get(SUBJECT_URL))
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.content", hasSize(2)))
                 .andExpect(status().isOk());
     }
 

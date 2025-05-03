@@ -78,7 +78,7 @@ class AccountControllerTest {
     void register_GivenValidInput_ShouldReturn200() throws Exception {
         AccountDto accountDto = getAccountDto();
 
-        mockMvc.perform(post(ACCOUNT_URL)
+        mockMvc.perform(post(AUTH_URL)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(accountDto)))
                 .andExpect(status().isCreated());
@@ -94,7 +94,7 @@ class AccountControllerTest {
         accountDto.setId(1231213);
         accountDto.setEmail(null);
 
-        mockMvc.perform(post(ACCOUNT_URL)
+        mockMvc.perform(post(AUTH_URL)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(accountDto)))
                 .andExpect(status().isBadRequest());
@@ -107,6 +107,7 @@ class AccountControllerTest {
     })
     void update_GivenValidInput_ShouldReturn200() throws Exception {
         AccountDto account = getAccountDto();
+        account.setEmail(null);
         account.setPassword(null);
         account.setAccountRole(AccountRole.ADMIN);
         account.setBanned(false);

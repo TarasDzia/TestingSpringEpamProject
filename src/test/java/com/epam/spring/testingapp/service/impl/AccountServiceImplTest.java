@@ -34,16 +34,17 @@ class AccountServiceImplTest {
     private Account expectedAccount;
     private List<Account> expectedAccounts;
 
+    @Mock
     private Page<Account> pageMock;
     @BeforeEach
     void setUp() {
         expectedAccount = getAccount();
         expectedAccounts = List.of(expectedAccount, getAccount());
-        when(pageMock.getContent()).thenReturn(expectedAccounts);
     }
 
     @Test
     void findAll_ShouldReturnArrayOfAccounts() {
+        when(pageMock.getContent()).thenReturn(expectedAccounts);
         when(accountRepository.findAllByAccountRole(any(), any(), any())).thenReturn(pageMock);
 
         String search = "test";
